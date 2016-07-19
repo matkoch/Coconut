@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>VsSettingsSwitch.ReSharper</id>
+    <version>$version$</version>
+    <title>VsSettingsSwitch</title>
+    <authors>Matthias Koch</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Fast Switching for VisualStudio Settings.</description>
+    <iconUrl>https://raw.githubusercontent.com/matkoch/VsSettingsSwitch/master/VsSettingsSwitch.ico</iconUrl>
+    <projectUrl>https://github.com/matkoch/VsSettingsSwitch</projectUrl>
+    <licenseUrl>https://raw.github.com/matkoch/VsSettingsSwitch/master/LICENSE</licenseUrl>
+    <tags>test linker</tags>
+    <dependencies>
+      <dependency id="Wave" version="[5.0]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="VsSettingsSwitch\bin\$configuration$\VsSettingsSwitch.*" target="DotFiles" />
+  </files>
+</package>
