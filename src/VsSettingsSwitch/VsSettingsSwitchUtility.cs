@@ -51,7 +51,7 @@ namespace VsSettingsSwitch
       var lastImportedSetting = GetLastSwitchedList();
       return Directory.GetFiles(settingsDirectory, "*.vssettings").Select(x => new FileInfo(x))
           .Where(x => !x.Name.StartsWith("CurrentSettings"))
-          .OrderByDescending(x => x.FullName != lastImportedSetting.LastOrDefault())
+          .OrderByDescending(x => x.FullName != lastImportedSetting.FirstOrDefault())
           .ThenBy(x => lastImportedSetting.IndexOf(x.FullName)).ToList();
     }
 

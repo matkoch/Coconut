@@ -10,7 +10,7 @@
     <iconUrl>https://raw.githubusercontent.com/matkoch/VsSettingsSwitch/master/VsSettingsSwitch.ico</iconUrl>
     <projectUrl>https://github.com/matkoch/VsSettingsSwitch</projectUrl>
     <licenseUrl>https://raw.github.com/matkoch/VsSettingsSwitch/master/LICENSE</licenseUrl>
-    <tags>test linker</tags>
+    <tags>vs settings visual studio import switch</tags>
     <dependencies>
       <dependency id="Wave" version="[5.0]" />
     </dependencies>
