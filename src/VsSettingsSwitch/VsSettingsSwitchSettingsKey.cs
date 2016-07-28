@@ -16,10 +16,10 @@ using System;
 using System.Linq;
 using JetBrains.Application.Settings;
 
-namespace VsSettingsSwitch
+namespace Coconut
 {
   [SettingsKey (typeof(HousekeepingSettings), "Switched VsSettings")]
-  public class VsSettingsSwitchSettingsKey
+  public class CoconutSettingsKey
   {
     [SettingsEntry ("", "Last imported files")]
     public string LastSwitchedList;

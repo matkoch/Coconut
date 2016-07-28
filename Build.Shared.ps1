@@ -1,4 +1,4 @@
-$SolutionFile     = "VsSettingsSwitch.sln"
+$SolutionFile     = "Coconut.sln"
 $SourceDir        = "src"
 $NuSpecDir        = "nuspec"
 $OutputDir        = "output"
@@ -10,4 +10,4 @@ $AssemblyInfoFile = Join-Path $SourceDir "AssemblyInfoShared.cs"
 $TestAssemblies   = @() | %{ Join-Path $SourceDir "$_\bin\$Configuration\$_.dll" }
 
 [array] `
-$NuSpecFiles      = @("VsSettingsSwitch.nuspec") | %{ Join-Path $NuSpecDir $_ }
+$NuSpecFiles      = @("Coconut.nuspec") | %{ Join-Path $NuSpecDir $_ }

@@ -8,13 +8,13 @@
     <ProjectGuid>{68456E60-C7A1-4B54-BB14-00063A03B7A3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VsSettingsSwitch</RootNamespace>
-    <AssemblyName>VsSettingsSwitch</AssemblyName>
+    <RootNamespace>Coconut</RootNamespace>
+    <AssemblyName>Coconut</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <NuGetPackageImportStamp>ce505f07</NuGetPackageImportStamp>
-    <Hive>VsSettingsSwitch</Hive>
+    <Hive>Coconut</Hive>
     <Vs12Installation>$(LocalAppData)\JetBrains\Installations\ReSharperPlatformVs12$(Hive)</Vs12Installation>
     <Vs14Installation>$(LocalAppData)\JetBrains\Installations\ReSharperPlatformVs14$(Hive)</Vs14Installation>
     <TargetFrameworkProfile />
@@ -191,20 +191,20 @@
     </Compile>
     <Compile Include="SwitchToLastVsSettingsAction.cs" />
     <Compile Include="SwitchVsSettingsAction.cs" />
-    <Compile Include="VsSettingsSwitchSettingsKey.cs" />
-    <Compile Include="VsSettingsSwitchUtility.cs" />
+    <Compile Include="CoconutSettingsKey.cs" />
+    <Compile Include="CoconutUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if exist "$(Vs12Installation)"        xcopy /Y "$(TargetDir)VsSettingsSwitch.*" "$(Vs12Installation)"
-if exist "$(Vs12Installation)_000" xcopy /Y "$(TargetDir)VsSettingsSwitch.*" "$(Vs12Installation)_000"
-if exist "$(Vs12Installation)_001" xcopy /Y "$(TargetDir)VsSettingsSwitch.*" "$(Vs12Installation)_001"
-if exist "$(Vs14Installation)"        xcopy /Y "$(TargetDir)VsSettingsSwitch.*" "$(Vs14Installation)"
-if exist "$(Vs14Installation)_000" xcopy /Y "$(TargetDir)VsSettingsSwitch.*" "$(Vs14Installation)_000"
-if exist "$(Vs14Installation)_001" xcopy /Y "$(TargetDir)VsSettingsSwitch.*" "$(Vs14Installation)_001"
+    <PostBuildEvent>if exist "$(Vs12Installation)"        xcopy /Y "$(TargetDir)Coconut.*" "$(Vs12Installation)"
+if exist "$(Vs12Installation)_000" xcopy /Y "$(TargetDir)Coconut.*" "$(Vs12Installation)_000"
+if exist "$(Vs12Installation)_001" xcopy /Y "$(TargetDir)Coconut.*" "$(Vs12Installation)_001"
+if exist "$(Vs14Installation)"        xcopy /Y "$(TargetDir)Coconut.*" "$(Vs14Installation)"
+if exist "$(Vs14Installation)_000" xcopy /Y "$(TargetDir)Coconut.*" "$(Vs14Installation)_000"
+if exist "$(Vs14Installation)_001" xcopy /Y "$(TargetDir)Coconut.*" "$(Vs14Installation)_001"
 </PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -26,9 +26,9 @@ using JetBrains.UI.Tooltips;
 using JetBrains.Util;
 using Microsoft.Win32;
 
-namespace VsSettingsSwitch
+namespace Coconut
 {
-  public static class VsSettingsSwitchUtility
+  public static class CoconutUtility
   {
     private static DTE2 Dte =>
         Shell.Instance.GetComponent<DTE2>();
@@ -58,7 +58,7 @@ namespace VsSettingsSwitch
     public static List<string> GetLastSwitchedList ()
     {
       var settingsStore = Shell.Instance.GetComponent<ISettingsStore>().BindToContextTransient(ContextRange.ApplicationWide);
-      return settingsStore.GetValue((VsSettingsSwitchSettingsKey y) => y.LastSwitchedList).Split('|').ToList();
+      return settingsStore.GetValue((CoconutSettingsKey y) => y.LastSwitchedList).Split('|').ToList();
     }
 
     public static void SetLastSwitchedList (string fileName)
@@ -67,7 +67,7 @@ namespace VsSettingsSwitch
       lastSwitchedList.Remove(fileName);
       lastSwitchedList.Insert(0, fileName);
 
-      SettingsStore.SetValue((VsSettingsSwitchSettingsKey s) => s.LastSwitchedList, lastSwitchedList.Join("|"));
+      SettingsStore.SetValue((CoconutSettingsKey s) => s.LastSwitchedList, lastSwitchedList.Join("|"));
     }
 
     public static void SwitchToSetting (IDataContext context, string fileName)

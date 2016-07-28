@@ -25,7 +25,7 @@ using JetBrains.UI.PopupMenu;
 using JetBrains.UI.Tooltips;
 using JetBrains.Util;
 
-namespace VsSettingsSwitch
+namespace Coconut
 {
   [Action ("Switch VsSettings", Id = 6214)]
   public class SwitchVsSettingsAction : IExecutableAction, IInsertLast<EditOthersGroup>
@@ -43,8 +43,8 @@ namespace VsSettingsSwitch
       var contextSource = context.GetData(UIDataConstants.PopupWindowContextSource).NotNull();
       var jetPopupMenus = context.GetComponent<JetPopupMenus>().NotNull();
 
-      var settingsDirectory = VsSettingsSwitchUtility.GetSettingsDirectory();
-      var settingFiles = VsSettingsSwitchUtility.GetSettingsFiles();
+      var settingsDirectory = CoconutUtility.GetSettingsDirectory();
+      var settingFiles = CoconutUtility.GetSettingsFiles();
 
       if (settingFiles.IsEmpty())
       {
@@ -70,7 +70,7 @@ namespace VsSettingsSwitch
 
             menu.ItemClicked.Advise(
                 lifetime,
-                key => VsSettingsSwitchUtility.SwitchToSetting(context, ((FileInfo) key).FullName));
+                key => CoconutUtility.SwitchToSetting(context, ((FileInfo) key).FullName));
           });
     }
 

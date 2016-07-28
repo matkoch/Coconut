@@ -16,7 +16,7 @@ using System;
 using System.Reflection;
 
 [assembly: AssemblyCompany ("Matthias Koch")]
-[assembly: AssemblyProduct ("VsSettingsSwitch.ReSharper")]
+[assembly: AssemblyProduct ("Coconut.ReSharper")]
 [assembly: AssemblyDescription("Fast Switching for VisualStudio Settings.")]
 [assembly: AssemblyCopyright ("Copyright © Matthias Koch, 2016 - Licensed under APACHE 2.0")]
 [assembly: AssemblyTrademark ("")]
