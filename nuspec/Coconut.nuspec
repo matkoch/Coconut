@@ -6,11 +6,11 @@
     <title>Coconut</title>
     <authors>Matthias Koch</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Fast Switching for VisualStudio Settings.</description>
+    <description>A handful of experimental ReSharper features.</description>
     <iconUrl>https://raw.githubusercontent.com/matkoch/Coconut/master/Coconut.ico</iconUrl>
     <projectUrl>https://github.com/matkoch/Coconut</projectUrl>
     <licenseUrl>https://raw.github.com/matkoch/Coconut/master/LICENSE</licenseUrl>
-    <tags>vs settings visual studio import switch</tags>
+    <tags>resharper features debug navigation settings visualstudio</tags>
     <dependencies>
       <dependency id="Wave" version="[5.0]" />
     </dependencies>

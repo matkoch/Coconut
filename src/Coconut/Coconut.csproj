@@ -189,14 +189,17 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="SwitchToLastVsSettingsAction.cs" />
-    <Compile Include="SwitchVsSettingsAction.cs" />
-    <Compile Include="CoconutSettingsKey.cs" />
-    <Compile Include="CoconutUtility.cs" />
+    <Compile Include="DebugNavigation\DebugDeclarationSearch.cs" />
+    <Compile Include="DebugNavigation\MimicSearchRequest.cs" />
+    <Compile Include="VsSettingsSwitch\SwitchToLastVsSettingsAction.cs" />
+    <Compile Include="VsSettingsSwitch\SwitchVsSettingsAction.cs" />
+    <Compile Include="VsSettingsSwitch\VsSettingsSwitchSettingsKey.cs" />
+    <Compile Include="VsSettingsSwitch\VsSettingsSwitchUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if exist "$(Vs12Installation)"        xcopy /Y "$(TargetDir)Coconut.*" "$(Vs12Installation)"
