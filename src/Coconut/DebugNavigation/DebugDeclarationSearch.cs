@@ -50,19 +50,19 @@ namespace Coconut.DebugNavigation
       if (actualDeclaredElement != null)
         return new[] { new DeclaredElementTypeUsageInfo(actualDeclaredElement, true) };
 
-      var selectedDeclaredElement = psiContext.DeclaredElements.Single() as ITypeMember;
-      if (selectedDeclaredElement != null)
-        return new[] { new DeclaredElementTypeUsageInfo(selectedDeclaredElement, false) };
+      //var selectedDeclaredElement = psiContext.DeclaredElements.Single() as ITypeMember;
+      //if (selectedDeclaredElement != null)
+      //  return new[] { new DeclaredElementTypeUsageInfo(selectedDeclaredElement, false) };
 
       return EmptyList<DeclaredElementTypeUsageInfo>.InstanceList;
     }
 
-    protected override SearchDeclarationsRequest GetDeclarationSearchRequest (DeclaredElementTypeUsageInfo elementInfo, Func<bool> checkCancelled)
-    {
-      return elementInfo.IsDeclaration
-          ? base.GetDeclarationSearchRequest(elementInfo, checkCancelled)
-          : new MimicSearchRequest(elementInfo.DeclaredElement);
-    }
+    //protected override SearchDeclarationsRequest GetDeclarationSearchRequest (DeclaredElementTypeUsageInfo elementInfo, Func<bool> checkCancelled)
+    //{
+    //  return elementInfo.IsDeclaration
+    //      ? base.GetDeclarationSearchRequest(elementInfo, checkCancelled)
+    //      : new MimicSearchRequest(elementInfo.DeclaredElement);
+    //}
 
     [CanBeNull]
     private ITypeMember GetActualDeclaredElement (PsiContext psiContext)
