@@ -19,14 +19,15 @@ using EnvDTE;
 using JetBrains.Annotations;
 using JetBrains.Application.ComponentModel;
 using JetBrains.Application.DataContext;
+using JetBrains.ProjectModel.DataContext;
 using JetBrains.ReSharper.Feature.Services.Navigation.ContextNavigation;
-using JetBrains.ReSharper.Feature.Services.Navigation.Requests;
+using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.DataContext;
-using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.Resources.Shell;
+using JetBrains.TextControl.DataContext;
 using JetBrains.Util;
 
 namespace Coconut.DebugNavigation
@@ -44,9 +45,7 @@ namespace Coconut.DebugNavigation
 
     protected override IEnumerable<DeclaredElementTypeUsageInfo> GetCandidates ([NotNull] IDataContext context, ReferencePreferenceKind kind)
     {
-      var psiContext = context.Psi();
-
-      var actualDeclaredElement = GetActualDeclaredElement(psiContext);
+      var actualDeclaredElement = GetActualDeclaredElement(context);
       if (actualDeclaredElement != null)
         return new[] { new DeclaredElementTypeUsageInfo(actualDeclaredElement, true) };
 
@@ -65,22 +64,31 @@ namespace Coconut.DebugNavigation
     //}
 
     [CanBeNull]
-    private ITypeMember GetActualDeclaredElement (PsiContext psiContext)
+    private ITypeMember GetActualDeclaredElement (IDataContext context)
     {
-      var expressionString = GetExpressionString(psiContext.SelectedExpression);
+      var psiContext = context.Psi();
+      if (psiContext.DeclaredElements.IsEmpty())
+        return null;
+
+      var expressionString = GetExpressionString(context);
       if (expressionString == null)
         return null;
 
       var expression = Debugger.GetExpression(expressionString);
+      if (!expression.IsValidValue)
+        return null;
+
       var type = GetTypeFullName(expression);
       return GetDeclaredElement(psiContext, type);
     }
 
     [CanBeNull]
-    private static string GetExpressionString ([CanBeNull] ITreeNode expression)
+    private static string GetExpressionString (IDataContext context)
     {
-      var invocationExpression = expression as IInvocationExpression;
-      var referenceExpression = invocationExpression?.InvokedExpression as IReferenceExpression;
+      var solution = context.GetData(ProjectModelDataConstants.SOLUTION);
+      var textControl = context.GetData(TextControlDataConstants.TEXT_CONTROL).NotNull();
+
+      var referenceExpression = TextControlToPsi.GetElementFromCaretPosition<IReferenceExpression>(solution, textControl);
       var qualifierExpression = referenceExpression?.QualifierExpression as IReferenceExpression;
       var declaredElement = qualifierExpression?.Reference.Resolve().DeclaredElement;
 
