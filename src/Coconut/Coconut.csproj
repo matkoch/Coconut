@@ -190,7 +190,10 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="DebugNavigation\DebugDeclarationSearch.cs" />
+    <Compile Include="DebugNavigation\DebuggingHelper.cs" />
+    <Compile Include="DebugNavigation\GotoDebugDeclarationAction.cs" />
     <Compile Include="DebugNavigation\MimicSearchRequest.cs" />
+    <Compile Include="DebugNavigation\ActionOverrideRegistry.cs" />
     <Compile Include="VsSettingsSwitch\SwitchToLastVsSettingsAction.cs" />
     <Compile Include="VsSettingsSwitch\SwitchVsSettingsAction.cs" />
     <Compile Include="VsSettingsSwitch\VsSettingsSwitchSettingsKey.cs" />
