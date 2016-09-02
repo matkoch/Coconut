@@ -14,7 +14,6 @@
 
 using System;
 using System.Linq;
-using EnvDTE;
 using JetBrains.ActionManagement;
 using JetBrains.Annotations;
 using JetBrains.Application.DataContext;
@@ -27,7 +26,6 @@ namespace Coconut.DebugNavigation
 {
   public class GotoDebugDeclarationAction : IExecutableAction
   {
-
     public bool Update (IDataContext context, ActionPresentation presentation, [NotNull] DelegateUpdate nextUpdate)
     {
       if (DebuggingHelper.IsDebugging && DebuggingHelper.GetInitializedExpression(context) == null && context.Psi().DeclaredElements.OfType<IOverridableMember>().Any(x => x.IsAbstract))

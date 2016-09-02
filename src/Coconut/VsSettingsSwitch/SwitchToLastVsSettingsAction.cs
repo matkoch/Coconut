@@ -14,14 +14,32 @@
 
 using System;
 using System.Linq;
+using EnvDTE80;
 using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
 using JetBrains.ReSharper.Feature.Services.Menu;
+using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.UI.ActionsRevised;
 
 namespace Coconut.VsSettingsSwitch
 {
-  [Action ("Switch to last VsSettings", Id = 6215)]
+  [Action ("Reset Keyboard Settings", Id = 6216)]
+  public class ResetKeyboardSettingsAction : IExecutableAction, IInsertLast<EditOthersGroup>
+  {
+    public bool Update (IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
+    {
+      return true;
+    }
+
+    public void Execute (IDataContext context, DelegateExecute nextExecute)
+    {
+      var dte = Shell.Instance.GetComponent<DTE2>();
+      var property = dte.Properties["Environment", "Keyboard"];
+      property.Item("SchemeName").Value = "(Default)";
+    }
+  }
+
+  [Action("Switch to last VsSettings", Id = 6215)]
   public class SwitchToLastVsSettingsAction : IExecutableAction, IInsertLast<EditOthersGroup>
   {
     #region IExecutableAction

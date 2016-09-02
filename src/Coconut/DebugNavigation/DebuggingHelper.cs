@@ -35,10 +35,7 @@ namespace Coconut.DebugNavigation
 
     private static Debugger Debugger { get; } = Shell.Instance.GetComponent<DTE>().Debugger;
 
-    public static bool IsDebugging
-    {
-      get { return Debugger.CurrentMode == dbgDebugMode.dbgBreakMode; }
-    }
+    public static bool IsDebugging => Debugger.CurrentMode == dbgDebugMode.dbgBreakMode;
 
     [CanBeNull]
     public static Expression GetInitializedExpression (IDataContext context)
