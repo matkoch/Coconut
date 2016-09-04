@@ -16,7 +16,7 @@ using System;
 using System.Reflection;
 
 [assembly: AssemblyCompany ("Matthias Koch")]
-[assembly: AssemblyProduct ("Coconut.ReSharper")]
+[assembly: AssemblyProduct ("Coconut")]
 [assembly: AssemblyDescription("Experimental ReSharper Features.")]
 [assembly: AssemblyCopyright ("Copyright © Matthias Koch, 2016 - Licensed under APACHE 2.0")]
 [assembly: AssemblyTrademark ("")]

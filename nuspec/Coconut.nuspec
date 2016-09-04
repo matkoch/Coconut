@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>Coconut.ReSharper</id>
+    <id>ReSharper.Coconut</id>
     <version>$version$</version>
     <title>Coconut</title>
     <authors>Matthias Koch</authors>
@@ -16,6 +16,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Coconut\bin\$configuration$\Coconut.*" target="DotFiles" />
+    <file src="Coconut\bin\$configuration$\Coconut.dll" target="DotFiles" />
   </files>
 </package>

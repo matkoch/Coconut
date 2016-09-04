@@ -290,6 +290,7 @@
     <Compile Include="DebugNavigation\DebuggingHelper.cs" />
     <Compile Include="DebugNavigation\GotoDebugDeclarationAction.cs" />
     <Compile Include="DebugNavigation\ActionOverrideRegistry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VsSettingsSwitch\SwitchToLastVsSettingsAction.cs" />
     <Compile Include="VsSettingsSwitch\SwitchVsSettingsAction.cs" />
     <Compile Include="VsSettingsSwitch\VsSettingsSwitchSettingsKey.cs" />

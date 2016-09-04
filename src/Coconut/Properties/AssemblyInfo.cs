@@ -16,5 +16,5 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle ("TestLinker")]
-[assembly: Guid ("20e4f47d-f0c5-494b-a83b-3dc98e9e2b06")]
+[assembly: AssemblyTitle ("Coconut")]
+[assembly: Guid ("2e69a28e-c2f9-421f-9e45-1c3e15fad184")]
