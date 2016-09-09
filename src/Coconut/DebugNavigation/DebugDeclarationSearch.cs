@@ -57,7 +57,7 @@ namespace Coconut.DebugNavigation
       return GetDeclaredElement(psiContext, type);
     }
 
-    private static string GetTypeFullName (PsiContext psiContext, Expression expression)
+    private static string GetTypeFullName (PsiContext psiContext, EnvDTE.Expression expression)
     {
       var type = expression.NotNull().Type;
       type = type.Substring(type.IndexOf('{') + 1);

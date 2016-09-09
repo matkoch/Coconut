@@ -19,7 +19,6 @@ using JetBrains.Annotations;
 using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel.DataContext;
 using JetBrains.ReSharper.Feature.Services.Util;
-using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.DataContext;
 using JetBrains.ReSharper.Psi.Tree;
@@ -29,16 +28,19 @@ using JetBrains.Util;
 
 namespace Coconut.DebugNavigation
 {
+  /// <summary>
+  /// Helper class around the <see cref="Debugger"/> interface 
+  /// </summary>
   public static class DebuggingHelper
   {
     private const string c_null = "null";
 
-    private static Debugger Debugger { get; } = Shell.Instance.GetComponent<DTE>().Debugger;
+    public static Debugger Debugger { get; } = Shell.Instance.GetComponent<DTE>().Debugger;
 
     public static bool IsDebugging => Debugger.CurrentMode == dbgDebugMode.dbgBreakMode;
 
     [CanBeNull]
-    public static Expression GetInitializedExpression (IDataContext context)
+    public static EnvDTE.Expression GetInitializedExpression (IDataContext context)
     {
       if (context.Psi().DeclaredElements.IsEmpty())
         return null;
@@ -66,6 +68,14 @@ namespace Coconut.DebugNavigation
         return null;
 
       return qualifierExpression.GetText();
+    }
+
+    public static void ChangeStackFrame (StackFrameMovement movement)
+    {
+      var allStackFrames = Debugger.CurrentThread.StackFrames.OfType<EnvDTE.StackFrame>().ToList();
+      var currentPosition = allStackFrames.IndexOf(Debugger.CurrentStackFrame);
+      currentPosition = Math.Min(Math.Max(currentPosition + (int) movement, 0), allStackFrames.Count - 1);
+      Debugger.CurrentStackFrame = allStackFrames[currentPosition];
     }
   }
 }

@@ -19,24 +19,25 @@ using JetBrains.Application.DataContext;
 using JetBrains.ReSharper.Feature.Services.Menu;
 using JetBrains.UI.ActionsRevised;
 
-namespace Coconut.VsSettingsSwitch
+namespace Coconut.DebugNavigation
 {
-  [Action("Switch to last VsSettings", Id = 6215)]
-  public class SwitchToLastVsSettingsAction : IExecutableAction, IInsertLast<EditOthersGroup>
+  public abstract class StackFrameActionBase : IExecutableAction, IInsertLast<EditOthersGroup>
   {
-    #region IExecutableAction
+    private readonly StackFrameMovement myMovement;
+
+    protected StackFrameActionBase (StackFrameMovement movement)
+    {
+      myMovement = movement;
+    }
 
     public bool Update (IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
-      return VsSettingsSwitchUtility.GetLastSwitchedList().Count >= 2;
+      return DebuggingHelper.IsDebugging;
     }
 
     public void Execute (IDataContext context, DelegateExecute nextExecute)
     {
-      var lastVsSettings = VsSettingsSwitchUtility.GetLastSwitchedList()[1];
-      VsSettingsSwitchUtility.SwitchToSetting(context, lastVsSettings);
+      DebuggingHelper.ChangeStackFrame(myMovement);
     }
-
-    #endregion
   }
 }

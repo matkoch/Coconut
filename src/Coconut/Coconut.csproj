@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <NuGetPackageImportStamp>c98117d9</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>2d47c438</NuGetPackageImportStamp>
     <Hive>Coconut</Hive>
     <Vs12Installation>$(LocalAppData)\JetBrains\Installations\ReSharperPlatformVs12$(Hive)</Vs12Installation>
     <Vs14Installation>$(LocalAppData)\JetBrains\Installations\ReSharperPlatformVs14$(Hive)</Vs14Installation>
@@ -72,10 +72,10 @@
       <HintPath>..\..\packages\JetBrains.Platform.Lib.DevExpress.2.0.20150224.0\lib\Net\DevExpress.XtraTreeList.v7.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <Reference Include="envdte80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=25313d96c538ed3d, processorArchitecture=MSIL">
@@ -288,9 +288,14 @@
     </Compile>
     <Compile Include="DebugNavigation\DebugDeclarationSearch.cs" />
     <Compile Include="DebugNavigation\DebuggingHelper.cs" />
+    <Compile Include="DebugNavigation\NextStackFrameAction.cs" />
+    <Compile Include="DebugNavigation\PreviousStackFrameAction.cs" />
+    <Compile Include="DebugNavigation\StackFrameActionBase.cs" />
     <Compile Include="DebugNavigation\GotoDebugDeclarationAction.cs" />
     <Compile Include="DebugNavigation\ActionOverrideRegistry.cs" />
+    <Compile Include="DebugNavigation\StackFrameMovement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VsSettingsSwitch\ResetKeyboardSettingsAction.cs" />
     <Compile Include="VsSettingsSwitch\SwitchToLastVsSettingsAction.cs" />
     <Compile Include="VsSettingsSwitch\SwitchVsSettingsAction.cs" />
     <Compile Include="VsSettingsSwitch\VsSettingsSwitchSettingsKey.cs" />

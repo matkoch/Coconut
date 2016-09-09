@@ -28,7 +28,9 @@ namespace Coconut.DebugNavigation
   {
     public bool Update (IDataContext context, ActionPresentation presentation, [NotNull] DelegateUpdate nextUpdate)
     {
-      if (DebuggingHelper.IsDebugging && DebuggingHelper.GetInitializedExpression(context) == null && context.Psi().DeclaredElements.OfType<IOverridableMember>().Any(x => x.IsAbstract))
+      if (DebuggingHelper.IsDebugging
+          && DebuggingHelper.GetInitializedExpression(context) == null
+          && context.Psi().DeclaredElements.OfType<IOverridableMember>().Any(x => x.IsAbstract))
         return true;
 
       return nextUpdate();
