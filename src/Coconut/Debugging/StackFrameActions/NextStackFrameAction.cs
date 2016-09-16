@@ -14,12 +14,16 @@
 
 using System;
 using System.Linq;
+using JetBrains.UI.ActionsRevised;
 
-namespace Coconut.DebugNavigation
+namespace Coconut.Debugging.StackFrameActions
 {
-  public enum StackFrameMovement
+  [Action ("Next StackFrame", Id = 6222)]
+  public class NextStackFrameAction : StackFrameActionBase
   {
-    Next = -1,
-    Previous = 1
+    public NextStackFrameAction ()
+      : base(StackFrameMovement.Next)
+    {
+    }
   }
 }

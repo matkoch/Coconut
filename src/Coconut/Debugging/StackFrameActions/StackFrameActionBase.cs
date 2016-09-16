@@ -15,31 +15,29 @@
 using System;
 using System.Linq;
 using JetBrains.ActionManagement;
-using JetBrains.Annotations;
 using JetBrains.Application.DataContext;
-using JetBrains.ReSharper.Features.Navigation.Features.FindHierarchy;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.DataContext;
+using JetBrains.ReSharper.Feature.Services.Menu;
 using JetBrains.UI.ActionsRevised;
 
-namespace Coconut.DebugNavigation
+namespace Coconut.Debugging.StackFrameActions
 {
-  public class GotoDebugDeclarationAction : IExecutableAction
+  public abstract class StackFrameActionBase : IExecutableAction, IInsertLast<EditOthersGroup>
   {
-    public bool Update (IDataContext context, ActionPresentation presentation, [NotNull] DelegateUpdate nextUpdate)
-    {
-      if (DebuggingHelper.IsDebugging
-          && DebuggingHelper.GetInitializedExpression(context) == null
-          && context.Psi().DeclaredElements.OfType<IOverridableMember>().Any(x => x.IsAbstract))
-        return true;
+    private readonly StackFrameMovement myMovement;
 
-      return nextUpdate();
+    protected StackFrameActionBase (StackFrameMovement movement)
+    {
+      myMovement = movement;
+    }
+
+    public bool Update (IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
+    {
+      return DebuggingHelper.IsDebugging;
     }
 
     public void Execute (IDataContext context, DelegateExecute nextExecute)
     {
-      var actionManager = context.GetComponent<IActionManager>();
-      actionManager.ExecuteAction<GotoInheritorsAction>();
+      DebuggingHelper.ChangeStackFrame(myMovement);
     }
   }
 }

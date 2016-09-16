@@ -1,4 +1,4 @@
-// Copyright 2016, 2015, 2014 Matthias Koch
+﻿// Copyright 2016, 2015, 2014 Matthias Koch
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,16 +14,19 @@
 
 using System;
 using System.Linq;
-using JetBrains.UI.ActionsRevised;
+using JetBrains.ActionManagement;
+using JetBrains.Application;
+using JetBrains.ReSharper.Features.Navigation.Features.GoToDeclaration;
 
-namespace Coconut.DebugNavigation
+namespace Coconut.Debugging.GotoDeclaration
 {
-  [Action ("Previous StackFrame", Id = 6221)]
-  public class PreviousStackFrameAction : StackFrameActionBase
+  [ShellComponent]
+  public class ActionOverrideRegistry
   {
-    public PreviousStackFrameAction ()
-      : base(StackFrameMovement.Previous)
+    public ActionOverrideRegistry (IActionManager manager)
     {
+      var gotoDeclarationAction = manager.Defs.GetActionDef(typeof(GotoDeclarationAction));
+      manager.Handlers.AddHandler(gotoDeclarationAction, new GotoDebugDeclarationAction());
     }
   }
 }

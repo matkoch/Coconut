@@ -25,7 +25,7 @@ using JetBrains.ReSharper.Psi.DataContext;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.Util;
 
-namespace Coconut.DebugNavigation
+namespace Coconut.Debugging.GotoDeclaration
 {
   // TODO: C#6 + Nullability showcase
   [ShellFeaturePart]
@@ -57,7 +57,7 @@ namespace Coconut.DebugNavigation
       return GetDeclaredElement(psiContext, type);
     }
 
-    private static string GetTypeFullName (PsiContext psiContext, EnvDTE.Expression expression)
+    private static string GetTypeFullName (PsiContext psiContext, Expression expression)
     {
       var type = expression.NotNull().Type;
       type = type.Substring(type.IndexOf('{') + 1);

@@ -286,14 +286,19 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="DebugNavigation\DebugDeclarationSearch.cs" />
-    <Compile Include="DebugNavigation\DebuggingHelper.cs" />
-    <Compile Include="DebugNavigation\NextStackFrameAction.cs" />
-    <Compile Include="DebugNavigation\PreviousStackFrameAction.cs" />
-    <Compile Include="DebugNavigation\StackFrameActionBase.cs" />
-    <Compile Include="DebugNavigation\GotoDebugDeclarationAction.cs" />
-    <Compile Include="DebugNavigation\ActionOverrideRegistry.cs" />
-    <Compile Include="DebugNavigation\StackFrameMovement.cs" />
+    <Compile Include="Debugging\BreakpointEnvoy.cs" />
+    <Compile Include="Debugging\GotoBreakpoints\BreakpointOccurrence.cs" />
+    <Compile Include="Debugging\GotoBreakpoints\BreakpointOccurrencePresenter.cs" />
+    <Compile Include="Debugging\GotoDeclaration\DebugDeclarationSearch.cs" />
+    <Compile Include="Debugging\DebuggingHelper.cs" />
+    <Compile Include="Utilities\FileSystemPathExtensions.cs" />
+    <Compile Include="Debugging\GotoBreakpoints\GotoBreakpointsProvider.cs" />
+    <Compile Include="Debugging\StackFrameActions\NextStackFrameAction.cs" />
+    <Compile Include="Debugging\StackFrameActions\PreviousStackFrameAction.cs" />
+    <Compile Include="Debugging\StackFrameActions\StackFrameActionBase.cs" />
+    <Compile Include="Debugging\GotoDeclaration\GotoDebugDeclarationAction.cs" />
+    <Compile Include="Debugging\GotoDeclaration\ActionOverrideRegistry.cs" />
+    <Compile Include="Debugging\StackFrameActions\StackFrameMovement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VsSettingsSwitch\ResetKeyboardSettingsAction.cs" />
     <Compile Include="VsSettingsSwitch\SwitchToLastVsSettingsAction.cs" />

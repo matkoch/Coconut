@@ -14,6 +14,7 @@
 
 using System;
 using System.Linq;
+using Coconut.Debugging.StackFrameActions;
 using EnvDTE;
 using JetBrains.Annotations;
 using JetBrains.Application.DataContext;
@@ -26,7 +27,7 @@ using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl.DataContext;
 using JetBrains.Util;
 
-namespace Coconut.DebugNavigation
+namespace Coconut.Debugging
 {
   /// <summary>
   /// Helper class around the <see cref="Debugger"/> interface 
