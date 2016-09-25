@@ -29,15 +29,15 @@ namespace Coconut.Debugging
     [CanBeNull]
     public static IDeclaredElement GetDeclaredElement (this IBreakpoint breakpoint, IPsiSourceFile file)
     {
-      var parenthesisIndex = breakpoint.FunctionName.IndexOf('(');
-      var functionNameWithoutParameterList = parenthesisIndex != -1 ? breakpoint.FunctionName.Substring(0, parenthesisIndex) : breakpoint.FunctionName;
-      var lastDotIndex = functionNameWithoutParameterList.LastIndexOf('.');
-      var typeName = functionNameWithoutParameterList.Substring(0, lastDotIndex);
+      var parenthesisIndex = breakpoint.FunctionName.IndexOf(value: '(');
+      var functionNameWithoutParameterList = parenthesisIndex != -1 ? breakpoint.FunctionName.Substring(startIndex: 0, length: parenthesisIndex) : breakpoint.FunctionName;
+      var lastDotIndex = functionNameWithoutParameterList.LastIndexOf(value: '.');
+      var typeName = functionNameWithoutParameterList.Substring(startIndex: 0, length: lastDotIndex);
       var functionName = functionNameWithoutParameterList.Substring(lastDotIndex + 1);
       var isConstructor = typeName.EndsWith("." + functionName);
 
       var psiServices = file.GetSolution().GetPsiServices();
-      var symbolScope = psiServices.Symbols.GetSymbolScope(file.PsiModule, true, true);
+      var symbolScope = psiServices.Symbols.GetSymbolScope(file.PsiModule, withReferences: true, caseSensitive: true);
       var typeElement = symbolScope.GetTypeElementByCLRName(typeName).NotNull("typeElement != null");
       var candidates = GetCandidateMembers(typeElement, isConstructor, functionName).ToList();
       if (candidates.Count == 1)
@@ -89,7 +89,7 @@ namespace Coconut.Debugging
     {
       var offset = sourceFile.Document.GetLineStartOffset((Int32<DocLine>) breakpoint.FileLine) + breakpoint.FileColumn;
       var textRange = new TextRange(offset);
-      return sourceFile.Navigate(textRange, true);
+      return sourceFile.Navigate(textRange, activate: true);
     }
     
     public static string GetLineText (this IBreakpoint breakpoint, IPsiSourceFile sourceFile)

@@ -30,16 +30,6 @@ namespace Coconut.Debugging.GotoBreakpoints
   {
     private static readonly TextStyle s_grayTextColor = TextStyle.FromForeColor(Color.Gray);
 
-    private static readonly DeclaredElementPresenterStyle s_styleMemberName =
-        new DeclaredElementPresenterStyle
-        {
-          ShowName = NameStyle.SHORT,
-          ShowParameterTypes = true,
-          ShowParameterNames = false,
-          ShowType = TypeStyle.AFTER,
-          ShowTypeParameters = TypeParameterStyle.FULL_WITH_VARIANCE
-        };
-
     public bool IsApplicable ([NotNull] IOccurrence occurrence)
     {
       return occurrence is BreakpointOccurrence;

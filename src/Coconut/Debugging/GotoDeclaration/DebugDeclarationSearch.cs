@@ -39,7 +39,7 @@ namespace Coconut.Debugging.GotoDeclaration
     {
       var actualDeclaredElement = GetActualDeclaredElement(context);
       if (actualDeclaredElement != null)
-        return new[] { new DeclaredElementTypeUsageInfo(actualDeclaredElement, true) };
+        return new[] { new DeclaredElementTypeUsageInfo(actualDeclaredElement, isDeclaration: true) };
 
       return EmptyList<DeclaredElementTypeUsageInfo>.InstanceList;
     }
@@ -59,8 +59,8 @@ namespace Coconut.Debugging.GotoDeclaration
     private static string GetTypeFullName (PsiContext psiContext, Expression expression)
     {
       var type = expression.NotNull().Type;
-      type = type.Substring(type.IndexOf('{') + 1);
-      type = type.Substring(0, type.Length - 1);
+      type = type.Substring(type.IndexOf(value: '{') + 1);
+      type = type.Substring(startIndex: 0, length: type.Length - 1);
 
       var keywordsService = LanguageManager.Instance.TryGetService<ITypeKeywordsService>(psiContext.SourceFile.NotNull().PrimaryPsiLanguage);
       if (keywordsService != null)

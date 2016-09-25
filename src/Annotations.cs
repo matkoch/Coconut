@@ -216,7 +216,7 @@ namespace JetBrains.Annotations
   internal sealed class ContractAnnotationAttribute : Attribute
   {
     public ContractAnnotationAttribute([NotNull] string contract)
-      : this(contract, false) { }
+      : this(contract, forceFullStates: false) { }
 
     public ContractAnnotationAttribute([NotNull] string contract, bool forceFullStates)
     {
@@ -240,7 +240,7 @@ namespace JetBrains.Annotations
   [AttributeUsage(AttributeTargets.All)]
   internal sealed class LocalizationRequiredAttribute : Attribute
   {
-    public LocalizationRequiredAttribute() : this(true) { }
+    public LocalizationRequiredAttribute() : this(required: true) { }
     public LocalizationRequiredAttribute(bool required)
     {
       Required = required;

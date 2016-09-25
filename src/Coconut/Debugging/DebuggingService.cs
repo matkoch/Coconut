@@ -87,7 +87,7 @@ namespace Coconut.Debugging
 
       var allStackFrames = GetStackFrames().ToList();
       var currentPosition = allStackFrames.IndexOf(Debugger.CurrentStackFrame);
-      currentPosition = Math.Min(Math.Max(currentPosition + (int) movement, 0), allStackFrames.Count - 1);
+      currentPosition = Math.Min(Math.Max(currentPosition + (int) movement, val2: 0), allStackFrames.Count - 1);
       Debugger.CurrentStackFrame = allStackFrames[currentPosition];
     }
 
