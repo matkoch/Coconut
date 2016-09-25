@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Coconut.Utilities;
-using EnvDTE;
 using JetBrains.Annotations;
 using JetBrains.Application.ComponentModel;
 using JetBrains.ReSharper.Feature.Services.Navigation.Goto.Misc;
