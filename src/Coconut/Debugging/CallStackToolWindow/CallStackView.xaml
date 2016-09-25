@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Coconut.Debugging.CallStackToolWindow.CodeStylePageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:treeGrid="urn:schemas-jetbrains-com:jetbrains-ui-treegrid"
+             xmlns:simpleOptions="clr-namespace:JetBrains.UI.Options.OptionsDialog2.SimpleOptions;assembly=JetBrains.Platform.UI">
+
+  <UserControl.Resources>
+    <ResourceDictionary>
+
+      <Style TargetType="{x:Type treeGrid:TreeGridRow}" BasedOn="{StaticResource {x:Type treeGrid:TreeGridRow}}">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="IsExpanded" Value="True" />
+        <Setter Property="BorderBrush" Value="{x:Static SystemColors.ControlBrush}" />
+        <Setter Property="BorderThickness" Value="0 0 0 1" />
+        <Setter Property="MinHeight" Value="21" />
+        <Setter Property="IsEnabled" Value="{Binding Path=IsAvailable.Value}" />
+      </Style>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <treeGrid:TreeGridView x:Name="Tree"
+                         AutomationProperties.AutomationId="CodeStyleTree"
+                         ItemsSource="{Binding Items}"
+                         SelectedItem="{Binding SelectedItem.Value}"
+                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                         ShowColumnHeaders="True"
+                         AllowColumnSorting="False" AllowColumnResize="True"
+                         BorderThickness="1" BorderBrush="#FFB4B4B4"
+                         SelectionMode="Single">
+    <treeGrid:TreeGridView.ColumnDefinitions>
+      
+      <treeGrid:TreeGridColumnDefinition Header="Description" CellMemberPath="Description" Width="*" HasExpander="True">
+        <treeGrid:TreeGridColumnDefinition.CellTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+          </DataTemplate>
+        </treeGrid:TreeGridColumnDefinition.CellTemplate>
+      </treeGrid:TreeGridColumnDefinition>
+
+      <treeGrid:TreeGridColumnDefinition Header="Preference" CellMemberPath="Editor" Width="150" />
+
+
+      <treeGrid:TreeGridColumnDefinition Header="Notify with" CellMemberPath="Severity" />
+    </treeGrid:TreeGridView.ColumnDefinitions>
+  </treeGrid:TreeGridView>
+</UserControl>

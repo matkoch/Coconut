@@ -16,6 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
+using EnvDTE;
 using EnvDTE80;
 using JetBrains.Annotations;
 using JetBrains.Application.DataContext;
@@ -35,6 +37,8 @@ namespace Coconut.VsSettingsSwitch
 
     private static IContextBoundSettingsStore SettingsStore =>
         Shell.Instance.GetComponent<ISettingsStore>().BindToContextTransient(ContextRange.ApplicationWide);
+
+    private static IEnumerable<Command> GetCommands () => Dte.Commands.OfType<Command>();
 
     public static string GetSettingsDirectory ()
     {
@@ -75,9 +79,92 @@ namespace Coconut.VsSettingsSwitch
       var tooltipManager = context.GetComponent<ITooltipManager>().NotNull();
       var contextSource = context.GetData(UIDataConstants.PopupWindowContextSource).NotNull();
 
-      Dte.ExecuteCommand("Tools.ImportandExportSettings", $"/import:\"{fileName}\"");
+      ResetShortcuts();
+      ImportFile(fileName);
       SetLastSwitchedList(fileName);
       tooltipManager.Show($"Switched to '{fileName}'", contextSource);
     }
+
+    private static void ImportFile (string fileName)
+    {
+      Dte.ExecuteCommand("Tools.ImportandExportSettings", $"/import:\"{fileName}\"");
+    }
+
+    public static void ResetShortcuts ()
+    {
+      foreach (var command in GetCommands())
+      {
+        var commandName = command.Name;
+        if (string.IsNullOrEmpty(commandName))
+          continue;
+
+        if (commandName.StartsWith("ReSharper"))
+          System.Diagnostics.Debugger.Launch();
+        var bindings = KeyboardSchemes.VisualCSharp.TryGetValue(commandName, new object[0]);
+        command.Bindings = bindings;
+      }
+    }
+
+    //private static void GetValue3 ()
+    //{
+    //  var tempFile = Path.GetTempFileName();
+    //  Dte.ExecuteCommand("Tools.ImportandExportSettings", $"/export:\"{tempFile}\"");
+    //  var document = XDocument.Load(tempFile);
+    //  document.Descendants("UserShortcuts").Remove();
+    //  document.Save(tempFile);
+    //  Dte.ExecuteCommand("Tools.ImportandExportSettings", $"/reset");
+    //  Dte.ExecuteCommand("Tools.ImportandExportSettings", $"/import:\"{tempFile}\"");
+    //}
+
+    //private static void GetValue1 ()
+    //{
+    //  var tempFile = Path.GetTempFileName();
+    //  Dte.ExecuteCommand("Tools.ImportandExportSettings", $"/export:\"{tempFile}\"");
+
+    //  var lines = File.ReadAllLines(tempFile);
+    //  lines = lines.Select(InvertTag).ToArray();
+    //  File.WriteAllLines(tempFile, lines);
+
+    //  ImportFile(tempFile);
+    //}
+
+    //private static string InvertTag (string tag)
+    //{
+    //  if (tag.Contains("<Shortcut"))
+    //    return tag.Replace("Shortcut", "RemoveShortcut");
+    //  if (tag.Contains("<RemoveShortcut"))
+    //    return tag.Replace("RemoveShortcut", "Shortcut");
+
+    //  return tag;
+    //}
+
+    //private static void GetValue ()
+    //{
+    //  var tempFile = @"C:\Users\matthias.koch\Desktop\bla.txt";
+    //  using (var file = File.Open(tempFile, FileMode.Create))
+    //  using (var writer = new StreamWriter(file))
+    //  {
+    //    //writer.WriteLine("<UserShortcuts>");
+    //    foreach (var c in Dte.Commands.OfType<Command>())
+    //    {
+    //      if (string.IsNullOrEmpty(c.Name))
+    //        continue;
+    //      //c.Bindings = new object[0];
+    //      //if (string.IsNullOrEmpty(c.Name))
+    //      //  continue;
+
+    //      var bindings = (object[]) c.Bindings;
+    //      if (bindings.Length == 0)
+    //        continue;
+
+    //      var array = bindings.Select(x => '"' + x.ToString() + '"').Join(", ");
+    //      var tag = $"{{ \"{c.Name}\", new[] {{ {array} }} }}";
+    //      writer.WriteLine(tag);
+    //    }
+    //    //writer.WriteLine("</UserShortcuts>");
+    //  }
+
+    //  //ImportFile(tempFile);
+    //}
   }
 }

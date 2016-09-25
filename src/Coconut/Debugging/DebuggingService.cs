@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Coconut.Debugging.StackFrameActions;
 using EnvDTE;
@@ -30,19 +31,28 @@ using JetBrains.Util;
 namespace Coconut.Debugging
 {
   /// <summary>
-  /// Helper class around the <see cref="Debugger"/> interface 
+  /// Service around the <see cref="Debugger"/> interface .
   /// </summary>
-  public static class DebuggingHelper
+  public static class DebuggingService
   {
     private const string c_null = "null";
 
-    public static Debugger Debugger { get; } = Shell.Instance.GetComponent<DTE>().Debugger;
-
-    public static bool IsDebugging => Debugger.CurrentMode == dbgDebugMode.dbgBreakMode;
+    private static Debugger s_debugger;
 
     [CanBeNull]
-    public static EnvDTE.Expression GetInitializedExpression (IDataContext context)
+    private static Debugger Debugger => s_debugger = s_debugger ?? Shell.Instance.TryGetComponent<DTE>()?.Debugger;
+
+    public static bool IsDebugging => Debugger?.CurrentMode == dbgDebugMode.dbgBreakMode;
+
+    public static IEnumerable<Breakpoint> GetBreakpoints() => Debugger?.Breakpoints.OfType<Breakpoint>() ?? EmptyList<Breakpoint>.InstanceList;
+
+    public static IEnumerable<StackFrame> GetStackFrames() => Debugger?.CurrentThread.StackFrames.OfType<StackFrame>() ?? EmptyList<StackFrame>.InstanceList;
+
+    [CanBeNull]
+    public static Expression GetInitializedExpression (IDataContext context)
     {
+      Assertion.Assert(Debugger != null, "Debugger != null");
+
       if (context.Psi().DeclaredElements.IsEmpty())
         return null;
 
@@ -73,10 +83,31 @@ namespace Coconut.Debugging
 
     public static void ChangeStackFrame (StackFrameMovement movement)
     {
-      var allStackFrames = Debugger.CurrentThread.StackFrames.OfType<EnvDTE.StackFrame>().ToList();
+      Assertion.Assert(Debugger != null, "Debugger != null");
+
+      var allStackFrames = GetStackFrames().ToList();
       var currentPosition = allStackFrames.IndexOf(Debugger.CurrentStackFrame);
       currentPosition = Math.Min(Math.Max(currentPosition + (int) movement, 0), allStackFrames.Count - 1);
       Debugger.CurrentStackFrame = allStackFrames[currentPosition];
+    }
+
+    public static bool IsValid (IBreakpoint breakpoint)
+    {
+      foreach (var vsBreakpoint in GetBreakpoints())
+      {
+        if (vsBreakpoint.File != breakpoint.File || 
+          vsBreakpoint.FileLine != breakpoint.FileLine + 1 ||
+          vsBreakpoint.FileColumn != breakpoint.FileColumn + 1)
+          continue;
+
+        Assertion.Assert(vsBreakpoint.FunctionName == breakpoint.FunctionName, "vsBreakpoint.FunctionName == breakpoint.FunctionName");
+        Assertion.Assert(vsBreakpoint.FunctionLineOffset == breakpoint.FunctionLineOffset + 1, "vsBreakpoint.FunctionLineOffset == breakpoint.FunctionLineOffset + 1");
+        Assertion.Assert(vsBreakpoint.FunctionColumnOffset == breakpoint.FunctionColumnOffset + 1, "vsBreakpoint.FunctionColumnOffset == breakpoint.FunctionColumnOffset + 1");
+
+        return true;
+      }
+
+      return false;
     }
   }
 }

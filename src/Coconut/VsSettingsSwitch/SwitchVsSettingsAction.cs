@@ -28,7 +28,7 @@ using JetBrains.Util;
 namespace Coconut.VsSettingsSwitch
 {
   [Action ("Switch VsSettings", Id = 6214)]
-  public class SwitchVsSettingsAction : IExecutableAction, IInsertLast<EditOthersGroup>
+  public class SwitchVsSettingsAction : IExecutableAction, IInsertLast<EditOthersGroup>, INeedMainThreadToUpdateAction
   {
     #region IExecutableAction
 
@@ -70,7 +70,10 @@ namespace Coconut.VsSettingsSwitch
 
             menu.ItemClicked.Advise(
                 lifetime,
-                key => VsSettingsSwitchUtility.SwitchToSetting(context, ((FileInfo) key).FullName));
+                key =>
+                {
+                  VsSettingsSwitchUtility.SwitchToSetting(context, ((FileInfo) key).FullName);
+                });
           });
     }
 

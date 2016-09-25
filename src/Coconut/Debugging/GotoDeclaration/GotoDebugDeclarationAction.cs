@@ -28,8 +28,8 @@ namespace Coconut.Debugging.GotoDeclaration
   {
     public bool Update (IDataContext context, ActionPresentation presentation, [NotNull] DelegateUpdate nextUpdate)
     {
-      if (DebuggingHelper.IsDebugging
-          && DebuggingHelper.GetInitializedExpression(context) == null
+      if (DebuggingService.IsDebugging
+          && DebuggingService.GetInitializedExpression(context) == null
           && context.Psi().DeclaredElements.OfType<IOverridableMember>().Any(x => x.IsAbstract))
         return true;
 

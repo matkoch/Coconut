@@ -44,15 +44,23 @@ namespace Coconut.Debugging.GotoBreakpoints
     {
       var solution = scope.GetSolution();
 
-      var breakpoints = DebuggingHelper.Debugger.Breakpoints.OfType<Breakpoint>();
+      var breakpoints = DebuggingService.GetBreakpoints().ToList();
       foreach (var breakpoint in breakpoints)
       {
         var sourceFile = FileSystemPath.Parse(breakpoint.File).TryGetSourceFile(solution);
         if (sourceFile == null)
           continue;
 
-        var matchingInfo = new MatchingInfo(matcher, breakpoint.File, false);
-        var occurrence = (IOccurrence) new BreakpointOccurrence(sourceFile, new BreakpointEnvoy(breakpoint));
+        var breakpointEnvoy = new VsBreakpoint(breakpoint);
+        var declaredElement = breakpointEnvoy.GetDeclaredElement(sourceFile);
+        if (declaredElement == null)
+          continue;
+
+        if (!matcher.Filter.IsNullOrWhitespace() && !matcher.Matches(declaredElement.ShortName))
+          continue;
+
+        var matchingInfo = new MatchingInfo(matcher, declaredElement.ShortName, matchingIndiciesAreCorrect: !matcher.Filter.IsNullOrWhitespace());
+        var occurrence = (IOccurrence) new BreakpointOccurrence(sourceFile, breakpointEnvoy, declaredElement);
         yield return Pair.Of(occurrence, matchingInfo);
       }
     }

@@ -17,29 +17,30 @@ using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.IDE;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Navigation.NavigationExtensions;
 using JetBrains.ReSharper.Feature.Services.Occurrences;
 using JetBrains.ReSharper.Psi;
 using JetBrains.UI.PopupWindowManager;
-using JetBrains.Util;
 
 namespace Coconut.Debugging.GotoBreakpoints
 {
   public class BreakpointOccurrence : IOccurrence
   {
-    public BreakpointOccurrence (IPsiSourceFile sourceFile, BreakpointEnvoy breakpointEnvoy)
+    public BreakpointOccurrence (IPsiSourceFile sourceFile, IBreakpoint breakpoint, IDeclaredElement declaredElement)
     {
       SourceFile = sourceFile;
-      Envoy = breakpointEnvoy;
+      Breakpoint = breakpoint;
+      DeclaredElement = declaredElement;
     }
 
     public IPsiSourceFile SourceFile { get; }
 
-    public BreakpointEnvoy Envoy { get; }
+    public IBreakpoint Breakpoint { get; }
+
+    public IDeclaredElement DeclaredElement { get; }
 
     public OccurrenceType OccurrenceType => OccurrenceType.Occurrence;
 
-    public bool IsValid => SourceFile.IsValid() && Envoy.IsValid();
+    public bool IsValid => SourceFile.IsValid() && Breakpoint.IsValid();
 
     public OccurrencePresentationOptions PresentationOptions { get; set; }
 
@@ -54,13 +55,12 @@ namespace Coconut.Debugging.GotoBreakpoints
       bool transferFocus,
       TabOptions tabOptions = TabOptions.Default)
     {
-      var textRange = new TextRange(Envoy.GetOffset(SourceFile));
-      return SourceFile.Navigate(textRange, true);
+      return Breakpoint.Navigate(SourceFile);
     }
 
     public string DumpToString ()
     {
-      return Envoy.ToString();
+      return "[Breakpoint] " + Breakpoint.File + ", line " + Breakpoint.FileLine + ", column " + Breakpoint.FileColumn;
     }
   }
 }

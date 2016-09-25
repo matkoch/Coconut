@@ -33,7 +33,7 @@ namespace Coconut.Debugging.GotoDeclaration
   {
     public override bool IsContextApplicable ([NotNull] IDataContext context)
     {
-      return DebuggingHelper.IsDebugging;
+      return DebuggingService.IsDebugging;
     }
 
     protected override IEnumerable<DeclaredElementTypeUsageInfo> GetCandidates ([NotNull] IDataContext context, ReferencePreferenceKind kind)
@@ -48,7 +48,7 @@ namespace Coconut.Debugging.GotoDeclaration
     [CanBeNull]
     private ITypeMember GetActualDeclaredElement (IDataContext context)
     {
-      var expression = DebuggingHelper.GetInitializedExpression(context);
+      var expression = DebuggingService.GetInitializedExpression(context);
       if (expression == null)
         return null;
 

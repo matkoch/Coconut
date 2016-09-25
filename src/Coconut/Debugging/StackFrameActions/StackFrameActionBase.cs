@@ -32,12 +32,12 @@ namespace Coconut.Debugging.StackFrameActions
 
     public bool Update (IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
-      return DebuggingHelper.IsDebugging;
+      return DebuggingService.IsDebugging;
     }
 
     public void Execute (IDataContext context, DelegateExecute nextExecute)
     {
-      DebuggingHelper.ChangeStackFrame(myMovement);
+      DebuggingService.ChangeStackFrame(myMovement);
     }
   }
 }
