@@ -8,3 +8,4 @@ A handful of experimental ReSharper features. Currently contains:
   - Going to actual member declaration if possible
   - Otherwise, expanding implementing types
 - Shortcuts "Previous/Next StackFrame"
+- GotoEverything includes Breakpoints
