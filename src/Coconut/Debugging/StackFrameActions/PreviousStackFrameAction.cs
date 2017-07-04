@@ -16,12 +16,12 @@ using JetBrains.UI.ActionsRevised;
 
 namespace Coconut.Debugging.StackFrameActions
 {
-  [Action ("Previous StackFrame", Id = 6221)]
-  public class PreviousStackFrameAction : StackFrameActionBase
-  {
-    public PreviousStackFrameAction ()
-      : base(StackFrameMovement.Previous)
+    [Action("Previous StackFrame", Id = 6221)]
+    public class PreviousStackFrameAction : StackFrameActionBase
     {
+        public PreviousStackFrameAction ()
+            : base(StackFrameMovement.Previous)
+        {
+        }
     }
-  }
 }

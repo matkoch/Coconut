@@ -15,5 +15,5 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle ("Coconut")]
-[assembly: Guid ("2e69a28e-c2f9-421f-9e45-1c3e15fad184")]
+[assembly: AssemblyTitle("Coconut")]
+[assembly: Guid("2e69a28e-c2f9-421f-9e45-1c3e15fad184")]

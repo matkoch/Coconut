@@ -19,23 +19,23 @@ using JetBrains.UI.ActionsRevised;
 
 namespace Coconut.Debugging.StackFrameActions
 {
-  public abstract class StackFrameActionBase : IExecutableAction, IInsertLast<EditOthersGroup>
-  {
-    private readonly StackFrameMovement myMovement;
-
-    protected StackFrameActionBase (StackFrameMovement movement)
+    public abstract class StackFrameActionBase : IExecutableAction, IInsertLast<EditOthersGroup>
     {
-      myMovement = movement;
-    }
+        private readonly StackFrameMovement myMovement;
 
-    public bool Update (IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
-    {
-      return DebuggingService.IsDebugging;
-    }
+        protected StackFrameActionBase (StackFrameMovement movement)
+        {
+            myMovement = movement;
+        }
 
-    public void Execute (IDataContext context, DelegateExecute nextExecute)
-    {
-      DebuggingService.ChangeStackFrame(myMovement);
+        public bool Update (IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
+        {
+            return DebuggingService.IsDebugging;
+        }
+
+        public void Execute (IDataContext context, DelegateExecute nextExecute)
+        {
+            DebuggingService.ChangeStackFrame(myMovement);
+        }
     }
-  }
 }

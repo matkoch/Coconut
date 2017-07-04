@@ -27,41 +27,43 @@ using JetBrains.Util;
 
 namespace Coconut.Debugging.GotoBreakpoints
 {
-  [ShellFeaturePart]
-  public class GotoBreakpointsProvider : IInstantGotoEverythingProvider
-  {
-    public bool IsApplicable ([NotNull] INavigationScope scope, [NotNull] GotoContext gotoContext, [NotNull] IdentifierMatcher matcher)
+    [ShellFeaturePart]
+    public class GotoBreakpointsProvider : IInstantGotoEverythingProvider
     {
-      return true;
+        public bool IsApplicable ([NotNull] INavigationScope scope, [NotNull] GotoContext gotoContext, [NotNull] IdentifierMatcher matcher)
+        {
+            return true;
+        }
+
+        public IEnumerable<Pair<IOccurrence, MatchingInfo>> GetMatchingOccurrences (
+            [NotNull] IdentifierMatcher matcher,
+            [NotNull] INavigationScope scope,
+            [NotNull] GotoContext gotoContext,
+            [NotNull] Func<bool> checkForInterrupt)
+        {
+            var solution = scope.GetSolution();
+
+            var breakpoints = DebuggingService.GetBreakpoints().ToList();
+            foreach (var breakpoint in breakpoints)
+            {
+                var sourceFile = FileSystemPath.Parse(breakpoint.File).TryGetSourceFile(solution);
+                if (sourceFile == null)
+                    continue;
+
+                var breakpointEnvoy = new VsBreakpoint(breakpoint);
+                var declaredElement = breakpointEnvoy.GetDeclaredElement(sourceFile);
+                if (declaredElement == null)
+                    continue;
+
+                if (!matcher.Filter.IsNullOrWhitespace() && !matcher.Matches(declaredElement.ShortName))
+                    continue;
+
+                var matchingInfo = new MatchingInfo(matcher,
+                    declaredElement.ShortName,
+                    matchingIndiciesAreCorrect: !matcher.Filter.IsNullOrWhitespace());
+                var occurrence = (IOccurrence) new BreakpointOccurrence(sourceFile, breakpointEnvoy, declaredElement);
+                yield return Pair.Of(occurrence, matchingInfo);
+            }
+        }
     }
-
-    public IEnumerable<Pair<IOccurrence, MatchingInfo>> GetMatchingOccurrences (
-      [NotNull] IdentifierMatcher matcher,
-      [NotNull] INavigationScope scope,
-      [NotNull] GotoContext gotoContext,
-      [NotNull] Func<bool> checkForInterrupt)
-    {
-      var solution = scope.GetSolution();
-
-      var breakpoints = DebuggingService.GetBreakpoints().ToList();
-      foreach (var breakpoint in breakpoints)
-      {
-        var sourceFile = FileSystemPath.Parse(breakpoint.File).TryGetSourceFile(solution);
-        if (sourceFile == null)
-          continue;
-
-        var breakpointEnvoy = new VsBreakpoint(breakpoint);
-        var declaredElement = breakpointEnvoy.GetDeclaredElement(sourceFile);
-        if (declaredElement == null)
-          continue;
-
-        if (!matcher.Filter.IsNullOrWhitespace() && !matcher.Matches(declaredElement.ShortName))
-          continue;
-
-        var matchingInfo = new MatchingInfo(matcher, declaredElement.ShortName, matchingIndiciesAreCorrect: !matcher.Filter.IsNullOrWhitespace());
-        var occurrence = (IOccurrence) new BreakpointOccurrence(sourceFile, breakpointEnvoy, declaredElement);
-        yield return Pair.Of(occurrence, matchingInfo);
-      }
-    }
-  }
 }

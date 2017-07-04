@@ -25,54 +25,57 @@ using JetBrains.Util;
 
 namespace Coconut.Debugging.GotoBreakpoints
 {
-  [OccurrencePresenter]
-  public class BreakpointOccurrencePresenter : IOccurrencePresenter
-  {
-    private static readonly TextStyle s_grayTextColor = TextStyle.FromForeColor(Color.Gray);
-
-    public bool IsApplicable ([NotNull] IOccurrence occurrence)
+    [OccurrencePresenter]
+    public class BreakpointOccurrencePresenter : IOccurrencePresenter
     {
-      return occurrence is BreakpointOccurrence;
+        private static readonly TextStyle s_grayTextColor = TextStyle.FromForeColor(Color.Gray);
+
+        public bool IsApplicable ([NotNull] IOccurrence occurrence)
+        {
+            return occurrence is BreakpointOccurrence;
+        }
+
+        public bool Present (
+            [NotNull] IMenuItemDescriptor descriptor,
+            [NotNull] IOccurrence occurrence,
+            OccurrencePresentationOptions occurrencePresentationOptions)
+        {
+            if (!occurrence.IsValid)
+                return false;
+
+            var breakpointOccurrence = occurrence as BreakpointOccurrence;
+            if (breakpointOccurrence == null)
+                return false;
+
+            var breakpoint = breakpointOccurrence.Breakpoint;
+            var sourceFile = breakpointOccurrence.SourceFile;
+            var declaredElement = breakpointOccurrence.DeclaredElement;
+
+            DeclaredElementPresenterMarking marking;
+            var declaredElementText = DeclaredElementMenuItemFormatter.FormatText(declaredElement, sourceFile.PrimaryPsiLanguage, out marking);
+            var lineAppendix = new RichText(" (Line " + breakpoint.FunctionLineOffset + ")");
+            var fullText = declaredElementText + lineAppendix;
+            fullText.SetStyle(s_grayTextColor, fullText.Length - lineAppendix.Length, lineAppendix.Length);
+
+            descriptor.Style = MenuItemStyle.Enabled;
+            descriptor.Icon = CommonThemedIcons.Abort.Id;
+            descriptor.Text = fullText;
+            descriptor.TailGlyph = breakpointOccurrence.GetSolution()
+                    .NotNull()
+                    .GetComponent<PsiSourceFilePresentationService>()
+                    .GetIconId(sourceFile);
+            descriptor.ShortcutText = new RichText(sourceFile.DisplayName, s_grayTextColor);
+
+            descriptor.Tooltip = breakpoint.GetLineText(sourceFile);
+
+            return true;
+        }
+
+        //[CanBeNull]
+        //private IDeclaredElement GetDeclaredElement (BreakpointEnvoy envoy, IPsiSourceFile sourceFile)
+        //{
+        //  var offset = envoy.GetOffset(sourceFile);
+        //  TextControlToPsi.GetDeclaredElements(sourceFile.GetSolution(), sourceFile.Document, offset, );
+        //}
     }
-
-    public bool Present (
-      [NotNull] IMenuItemDescriptor descriptor,
-      [NotNull] IOccurrence occurrence,
-      OccurrencePresentationOptions occurrencePresentationOptions)
-    {
-      if (!occurrence.IsValid)
-        return false;
-
-      var breakpointOccurrence = occurrence as BreakpointOccurrence;
-      if (breakpointOccurrence == null)
-        return false;
-
-      var breakpoint = breakpointOccurrence.Breakpoint;
-      var sourceFile = breakpointOccurrence.SourceFile;
-      var declaredElement = breakpointOccurrence.DeclaredElement;
-
-      DeclaredElementPresenterMarking marking;
-      var declaredElementText = DeclaredElementMenuItemFormatter.FormatText(declaredElement, sourceFile.PrimaryPsiLanguage, out marking);
-      var lineAppendix = new RichText(" (Line " + breakpoint.FunctionLineOffset + ")");
-      var fullText = declaredElementText + lineAppendix;
-      fullText.SetStyle(s_grayTextColor, fullText.Length - lineAppendix.Length, lineAppendix.Length);
-
-      descriptor.Style = MenuItemStyle.Enabled;
-      descriptor.Icon = CommonThemedIcons.Abort.Id;
-      descriptor.Text = fullText;
-      descriptor.TailGlyph = breakpointOccurrence.GetSolution().NotNull().GetComponent<PsiSourceFilePresentationService>().GetIconId(sourceFile);
-      descriptor.ShortcutText = new RichText(sourceFile.DisplayName, s_grayTextColor);
-
-      descriptor.Tooltip = breakpoint.GetLineText(sourceFile);
-
-      return true;
-    }
-
-    //[CanBeNull]
-    //private IDeclaredElement GetDeclaredElement (BreakpointEnvoy envoy, IPsiSourceFile sourceFile)
-    //{
-    //  var offset = envoy.GetOffset(sourceFile);
-    //  TextControlToPsi.GetDeclaredElements(sourceFile.GetSolution(), sourceFile.Document, offset, );
-    //}
-  }
 }

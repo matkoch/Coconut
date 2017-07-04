@@ -14,19 +14,19 @@
 
 namespace Coconut.Debugging
 {
-  /// <summary>
-  /// Common interface for breakpoints. All lines/columns are zero-based.
-  /// </summary>
-  public interface IBreakpoint
-  {
-    string File { get; }
-    int FileLine { get; }
-    int FileColumn { get; }
+    /// <summary>
+    /// Common interface for breakpoints. All lines/columns are zero-based.
+    /// </summary>
+    public interface IBreakpoint
+    {
+        string File { get; }
+        int FileLine { get; }
+        int FileColumn { get; }
 
-    string FunctionName { get; }
-    int FunctionLineOffset { get; }
-    int FunctionColumnOffset { get; }
+        string FunctionName { get; }
+        int FunctionLineOffset { get; }
+        int FunctionColumnOffset { get; }
 
-    bool IsValid ();
-  }
+        bool IsValid ();
+    }
 }

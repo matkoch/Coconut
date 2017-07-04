@@ -23,22 +23,22 @@ using JetBrains.UI.ActionsRevised;
 
 namespace Coconut.Debugging.GotoDeclaration
 {
-  public class GotoDebugDeclarationAction : IExecutableAction
-  {
-    public bool Update (IDataContext context, ActionPresentation presentation, [NotNull] DelegateUpdate nextUpdate)
+    public class GotoDebugDeclarationAction : IExecutableAction
     {
-      if (DebuggingService.IsDebugging
-          && DebuggingService.GetInitializedExpression(context) == null
-          && context.Psi().DeclaredElements.OfType<IOverridableMember>().Any(x => x.IsAbstract))
-        return true;
+        public bool Update (IDataContext context, ActionPresentation presentation, [NotNull] DelegateUpdate nextUpdate)
+        {
+            if (DebuggingService.IsDebugging
+                && DebuggingService.GetInitializedExpression(context) == null
+                && context.Psi().DeclaredElements.OfType<IOverridableMember>().Any(x => x.IsAbstract))
+                return true;
 
-      return nextUpdate();
-    }
+            return nextUpdate();
+        }
 
-    public void Execute (IDataContext context, DelegateExecute nextExecute)
-    {
-      var actionManager = context.GetComponent<IActionManager>();
-      actionManager.ExecuteAction<GotoInheritorsAction>();
+        public void Execute (IDataContext context, DelegateExecute nextExecute)
+        {
+            var actionManager = context.GetComponent<IActionManager>();
+            actionManager.ExecuteAction<GotoInheritorsAction>();
+        }
     }
-  }
 }

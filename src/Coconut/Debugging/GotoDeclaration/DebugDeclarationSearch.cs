@@ -26,83 +26,83 @@ using JetBrains.Util;
 
 namespace Coconut.Debugging.GotoDeclaration
 {
-  // TODO: C#6 + Nullability showcase
-  [ShellFeaturePart]
-  public class DebugDeclarationSearch : DefaultDeclarationSearch
-  {
-    public override bool IsContextApplicable ([NotNull] IDataContext context)
+    // TODO: C#6 + Nullability showcase
+    [ShellFeaturePart]
+    public class DebugDeclarationSearch : DefaultDeclarationSearch
     {
-      return DebuggingService.IsDebugging;
+        public override bool IsContextApplicable ([NotNull] IDataContext context)
+        {
+            return DebuggingService.IsDebugging;
+        }
+
+        protected override IEnumerable<DeclaredElementTypeUsageInfo> GetCandidates ([NotNull] IDataContext context, ReferencePreferenceKind kind)
+        {
+            var actualDeclaredElement = GetActualDeclaredElement(context);
+            if (actualDeclaredElement != null)
+                return new[] { new DeclaredElementTypeUsageInfo(actualDeclaredElement, isDeclaration: true) };
+
+            return EmptyList<DeclaredElementTypeUsageInfo>.InstanceList;
+        }
+
+        [CanBeNull]
+        private ITypeMember GetActualDeclaredElement (IDataContext context)
+        {
+            var expression = DebuggingService.GetInitializedExpression(context);
+            if (expression == null)
+                return null;
+
+            var psiContext = context.Psi();
+            var type = GetTypeFullName(psiContext, expression);
+            return GetDeclaredElement(psiContext, type);
+        }
+
+        private static string GetTypeFullName (PsiContext psiContext, Expression expression)
+        {
+            var type = expression.NotNull().Type;
+            type = type.Substring(type.IndexOf(value: '{') + 1);
+            type = type.Substring(startIndex: 0, length: type.Length - 1);
+
+            var keywordsService = LanguageManager.Instance.TryGetService<ITypeKeywordsService>(psiContext.SourceFile.NotNull().PrimaryPsiLanguage);
+            if (keywordsService != null)
+                type = keywordsService.GetFullQualifiedTypeName(type) ?? type;
+
+            return type;
+        }
+
+        [CanBeNull]
+        private static ITypeMember GetDeclaredElement (PsiContext psiContext, string actualType)
+        {
+            var declaredType = TypeFactory.CreateTypeByCLRName(actualType, psiContext.SourceFile.NotNull().PsiModule);
+            var resolveResult = declaredType.Resolve();
+            if (!resolveResult.IsValid() || resolveResult.IsEmpty)
+                return null;
+
+            var declaredElement = (ITypeElement) resolveResult.DeclaredElement;
+            if (declaredElement == null)
+                return null;
+
+            var selectedElement = psiContext.DeclaredElements.Single();
+            var matchingMembers = declaredElement.GetMembers().Where(x => IsMatchingMember(x, selectedElement)).ToList();
+            return matchingMembers.FirstOrDefault();
+        }
+
+        private static bool IsMatchingMember (IDeclaredElement candidate, IDeclaredElement selectedElement)
+        {
+            if (candidate.ShortName != selectedElement.ShortName)
+                return false;
+
+            if (candidate.Equals(selectedElement))
+                return true;
+
+            var overridableMember = candidate as IOverridableMember;
+            if (overridableMember == null)
+                return true;
+
+            var superMembers = overridableMember.GetAllSuperMembers().Select(y => y.Element);
+            if (superMembers.Contains(selectedElement))
+                return true;
+
+            return false;
+        }
     }
-
-    protected override IEnumerable<DeclaredElementTypeUsageInfo> GetCandidates ([NotNull] IDataContext context, ReferencePreferenceKind kind)
-    {
-      var actualDeclaredElement = GetActualDeclaredElement(context);
-      if (actualDeclaredElement != null)
-        return new[] { new DeclaredElementTypeUsageInfo(actualDeclaredElement, isDeclaration: true) };
-
-      return EmptyList<DeclaredElementTypeUsageInfo>.InstanceList;
-    }
-
-    [CanBeNull]
-    private ITypeMember GetActualDeclaredElement (IDataContext context)
-    {
-      var expression = DebuggingService.GetInitializedExpression(context);
-      if (expression == null)
-        return null;
-
-      var psiContext = context.Psi();
-      var type = GetTypeFullName(psiContext, expression);
-      return GetDeclaredElement(psiContext, type);
-    }
-
-    private static string GetTypeFullName (PsiContext psiContext, Expression expression)
-    {
-      var type = expression.NotNull().Type;
-      type = type.Substring(type.IndexOf(value: '{') + 1);
-      type = type.Substring(startIndex: 0, length: type.Length - 1);
-
-      var keywordsService = LanguageManager.Instance.TryGetService<ITypeKeywordsService>(psiContext.SourceFile.NotNull().PrimaryPsiLanguage);
-      if (keywordsService != null)
-        type = keywordsService.GetFullQualifiedTypeName(type) ?? type;
-
-      return type;
-    }
-
-    [CanBeNull]
-    private static ITypeMember GetDeclaredElement (PsiContext psiContext, string actualType)
-    {
-      var declaredType = TypeFactory.CreateTypeByCLRName(actualType, psiContext.SourceFile.NotNull().PsiModule);
-      var resolveResult = declaredType.Resolve();
-      if (!resolveResult.IsValid() || resolveResult.IsEmpty)
-        return null;
-
-      var declaredElement = (ITypeElement) resolveResult.DeclaredElement;
-      if (declaredElement == null)
-        return null;
-
-      var selectedElement = psiContext.DeclaredElements.Single();
-      var matchingMembers = declaredElement.GetMembers().Where(x => IsMatchingMember(x, selectedElement)).ToList();
-      return matchingMembers.FirstOrDefault();
-    }
-
-    private static bool IsMatchingMember (IDeclaredElement candidate, IDeclaredElement selectedElement)
-    {
-      if (candidate.ShortName != selectedElement.ShortName)
-        return false;
-
-      if (candidate.Equals(selectedElement))
-        return true;
-
-      var overridableMember = candidate as IOverridableMember;
-      if (overridableMember == null)
-        return true;
-
-      var superMembers = overridableMember.GetAllSuperMembers().Select(y => y.Element);
-      if (superMembers.Contains(selectedElement))
-        return true;
-
-      return false;
-    }
-  }
 }

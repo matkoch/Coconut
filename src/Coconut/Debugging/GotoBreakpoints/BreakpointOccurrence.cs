@@ -21,44 +21,44 @@ using JetBrains.UI.PopupWindowManager;
 
 namespace Coconut.Debugging.GotoBreakpoints
 {
-  public class BreakpointOccurrence : IOccurrence
-  {
-    public BreakpointOccurrence (IPsiSourceFile sourceFile, IBreakpoint breakpoint, IDeclaredElement declaredElement)
+    public class BreakpointOccurrence : IOccurrence
     {
-      SourceFile = sourceFile;
-      Breakpoint = breakpoint;
-      DeclaredElement = declaredElement;
+        public BreakpointOccurrence (IPsiSourceFile sourceFile, IBreakpoint breakpoint, IDeclaredElement declaredElement)
+        {
+            SourceFile = sourceFile;
+            Breakpoint = breakpoint;
+            DeclaredElement = declaredElement;
+        }
+
+        public IPsiSourceFile SourceFile { get; }
+
+        public IBreakpoint Breakpoint { get; }
+
+        public IDeclaredElement DeclaredElement { get; }
+
+        public OccurrenceType OccurrenceType => OccurrenceType.Occurrence;
+
+        public bool IsValid => SourceFile.IsValid() && Breakpoint.IsValid();
+
+        public OccurrencePresentationOptions PresentationOptions { get; set; }
+
+        public ISolution GetSolution ()
+        {
+            return SourceFile.GetSolution();
+        }
+
+        public bool Navigate (
+            [NotNull] ISolution solution,
+            [NotNull] PopupWindowContextSource windowContext,
+            bool transferFocus,
+            TabOptions tabOptions = TabOptions.Default)
+        {
+            return Breakpoint.Navigate(SourceFile);
+        }
+
+        public string DumpToString ()
+        {
+            return "[Breakpoint] " + Breakpoint.File + ", line " + Breakpoint.FileLine + ", column " + Breakpoint.FileColumn;
+        }
     }
-
-    public IPsiSourceFile SourceFile { get; }
-
-    public IBreakpoint Breakpoint { get; }
-
-    public IDeclaredElement DeclaredElement { get; }
-
-    public OccurrenceType OccurrenceType => OccurrenceType.Occurrence;
-
-    public bool IsValid => SourceFile.IsValid() && Breakpoint.IsValid();
-
-    public OccurrencePresentationOptions PresentationOptions { get; set; }
-
-    public ISolution GetSolution ()
-    {
-      return SourceFile.GetSolution();
-    }
-
-    public bool Navigate (
-      [NotNull] ISolution solution,
-      [NotNull] PopupWindowContextSource windowContext,
-      bool transferFocus,
-      TabOptions tabOptions = TabOptions.Default)
-    {
-      return Breakpoint.Navigate(SourceFile);
-    }
-
-    public string DumpToString ()
-    {
-      return "[Breakpoint] " + Breakpoint.File + ", line " + Breakpoint.FileLine + ", column " + Breakpoint.FileColumn;
-    }
-  }
 }

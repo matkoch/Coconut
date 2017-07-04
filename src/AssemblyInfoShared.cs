@@ -14,13 +14,13 @@
 
 using System.Reflection;
 
-[assembly: AssemblyCompany ("Matthias Koch")]
-[assembly: AssemblyProduct ("Coconut")]
+[assembly: AssemblyCompany("Matthias Koch")]
+[assembly: AssemblyProduct("Coconut")]
 [assembly: AssemblyDescription("Experimental ReSharper Features.")]
-[assembly: AssemblyCopyright ("Copyright © Matthias Koch, 2016 - Licensed under APACHE 2.0")]
-[assembly: AssemblyTrademark ("")]
+[assembly: AssemblyCopyright("Copyright © Matthias Koch, 2016 - Licensed under APACHE 2.0")]
+[assembly: AssemblyTrademark("")]
 
-[assembly: AssemblyConfiguration ("DEBUG")]
-[assembly: AssemblyVersion ("1.3.3.7")]
-[assembly: AssemblyFileVersion ("1.3.3.7")]
-[assembly: AssemblyInformationalVersion ("DEV")]
+[assembly: AssemblyConfiguration("DEBUG")]
+[assembly: AssemblyVersion("1.3.3.7")]
+[assembly: AssemblyFileVersion("1.3.3.7")]
+[assembly: AssemblyInformationalVersion("DEV")]

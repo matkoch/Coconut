@@ -30,84 +30,87 @@ using JetBrains.Util;
 
 namespace Coconut.Debugging
 {
-  /// <summary>
-  /// Service around the <see cref="Debugger"/> interface .
-  /// </summary>
-  public static class DebuggingService
-  {
-    private const string c_null = "null";
-
-    private static Debugger s_debugger;
-
-    [CanBeNull]
-    private static Debugger Debugger => s_debugger = s_debugger ?? Shell.Instance.TryGetComponent<DTE>()?.Debugger;
-
-    public static bool IsDebugging => Debugger?.CurrentMode == dbgDebugMode.dbgBreakMode;
-
-    public static IEnumerable<Breakpoint> GetBreakpoints() => Debugger?.Breakpoints.OfType<Breakpoint>() ?? EmptyList<Breakpoint>.InstanceList;
-
-    public static IEnumerable<StackFrame> GetStackFrames() => Debugger?.CurrentThread.StackFrames.OfType<StackFrame>() ?? EmptyList<StackFrame>.InstanceList;
-
-    [CanBeNull]
-    public static Expression GetInitializedExpression (IDataContext context)
+    /// <summary>
+    /// Service around the <see cref="Debugger"/> interface .
+    /// </summary>
+    public static class DebuggingService
     {
-      Assertion.Assert(Debugger != null, "Debugger != null");
+        private const string c_null = "null";
 
-      if (context.Psi().DeclaredElements.IsEmpty())
-        return null;
+        private static Debugger s_debugger;
 
-      var expressionText = GetEvaluableExpressionText(context);
-      if (expressionText == null)
-        return null;
+        [CanBeNull]
+        private static Debugger Debugger => s_debugger = s_debugger ?? Shell.Instance.TryGetComponent<DTE>()?.Debugger;
 
-      var expression = Debugger.GetExpression(expressionText);
-      if (!expression.IsValidValue || expression.Value == c_null)
-        return null;
+        public static bool IsDebugging => Debugger?.CurrentMode == dbgDebugMode.dbgBreakMode;
 
-      return expression;
+        public static IEnumerable<Breakpoint> GetBreakpoints () => Debugger?.Breakpoints.OfType<Breakpoint>() ?? EmptyList<Breakpoint>.InstanceList;
+
+        public static IEnumerable<StackFrame> GetStackFrames () => Debugger?.CurrentThread.StackFrames.OfType<StackFrame>()
+                                                                   ?? EmptyList<StackFrame>.InstanceList;
+
+        [CanBeNull]
+        public static Expression GetInitializedExpression (IDataContext context)
+        {
+            Assertion.Assert(Debugger != null, "Debugger != null");
+
+            if (context.Psi().DeclaredElements.IsEmpty())
+                return null;
+
+            var expressionText = GetEvaluableExpressionText(context);
+            if (expressionText == null)
+                return null;
+
+            var expression = Debugger.GetExpression(expressionText);
+            if (!expression.IsValidValue || expression.Value == c_null)
+                return null;
+
+            return expression;
+        }
+
+        [CanBeNull]
+        private static string GetEvaluableExpressionText (IDataContext context)
+        {
+            var solution = context.GetData(ProjectModelDataConstants.SOLUTION);
+            var textControl = context.GetData(TextControlDataConstants.TEXT_CONTROL).NotNull();
+
+            var referenceExpression = TextControlToPsi.GetElementFromCaretPosition<IReferenceExpression>(solution, textControl);
+            var qualifierExpression = referenceExpression?.QualifierExpression;
+            if (!(qualifierExpression is IReferenceExpression) && !(qualifierExpression is ILiteralExpression))
+                return null;
+
+            return qualifierExpression.GetText();
+        }
+
+        public static void ChangeStackFrame (StackFrameMovement movement)
+        {
+            Assertion.Assert(Debugger != null, "Debugger != null");
+
+            var allStackFrames = GetStackFrames().ToList();
+            var currentPosition = allStackFrames.IndexOf(Debugger.CurrentStackFrame);
+            currentPosition = Math.Min(Math.Max(currentPosition + (int) movement, val2: 0), allStackFrames.Count - 1);
+            Debugger.CurrentStackFrame = allStackFrames[currentPosition];
+        }
+
+        public static bool IsValid (IBreakpoint breakpoint)
+        {
+            foreach (var vsBreakpoint in GetBreakpoints())
+            {
+                if (vsBreakpoint.File != breakpoint.File ||
+                    vsBreakpoint.FileLine != breakpoint.FileLine + 1 ||
+                    vsBreakpoint.FileColumn != breakpoint.FileColumn + 1)
+                    continue;
+
+                Assertion.Assert(vsBreakpoint.FunctionName == breakpoint.FunctionName, "vsBreakpoint.FunctionName == breakpoint.FunctionName");
+                Assertion.Assert(vsBreakpoint.FunctionLineOffset == breakpoint.FunctionLineOffset + 1,
+                    "vsBreakpoint.FunctionLineOffset == breakpoint.FunctionLineOffset + 1");
+                Assertion.Assert(vsBreakpoint.FunctionColumnOffset == breakpoint.FunctionColumnOffset + 1,
+                    "vsBreakpoint.FunctionColumnOffset == breakpoint.FunctionColumnOffset + 1");
+
+                return true;
+            }
+
+            return false;
+        }
     }
-
-    [CanBeNull]
-    private static string GetEvaluableExpressionText (IDataContext context)
-    {
-      var solution = context.GetData(ProjectModelDataConstants.SOLUTION);
-      var textControl = context.GetData(TextControlDataConstants.TEXT_CONTROL).NotNull();
-
-      var referenceExpression = TextControlToPsi.GetElementFromCaretPosition<IReferenceExpression>(solution, textControl);
-      var qualifierExpression = referenceExpression?.QualifierExpression;
-      if (!(qualifierExpression is IReferenceExpression) && !(qualifierExpression is ILiteralExpression))
-        return null;
-
-      return qualifierExpression.GetText();
-    }
-
-    public static void ChangeStackFrame (StackFrameMovement movement)
-    {
-      Assertion.Assert(Debugger != null, "Debugger != null");
-
-      var allStackFrames = GetStackFrames().ToList();
-      var currentPosition = allStackFrames.IndexOf(Debugger.CurrentStackFrame);
-      currentPosition = Math.Min(Math.Max(currentPosition + (int) movement, val2: 0), allStackFrames.Count - 1);
-      Debugger.CurrentStackFrame = allStackFrames[currentPosition];
-    }
-
-    public static bool IsValid (IBreakpoint breakpoint)
-    {
-      foreach (var vsBreakpoint in GetBreakpoints())
-      {
-        if (vsBreakpoint.File != breakpoint.File || 
-          vsBreakpoint.FileLine != breakpoint.FileLine + 1 ||
-          vsBreakpoint.FileColumn != breakpoint.FileColumn + 1)
-          continue;
-
-        Assertion.Assert(vsBreakpoint.FunctionName == breakpoint.FunctionName, "vsBreakpoint.FunctionName == breakpoint.FunctionName");
-        Assertion.Assert(vsBreakpoint.FunctionLineOffset == breakpoint.FunctionLineOffset + 1, "vsBreakpoint.FunctionLineOffset == breakpoint.FunctionLineOffset + 1");
-        Assertion.Assert(vsBreakpoint.FunctionColumnOffset == breakpoint.FunctionColumnOffset + 1, "vsBreakpoint.FunctionColumnOffset == breakpoint.FunctionColumnOffset + 1");
-
-        return true;
-      }
-
-      return false;
-    }
-  }
 }

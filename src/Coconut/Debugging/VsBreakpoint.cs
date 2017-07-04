@@ -16,29 +16,29 @@ using EnvDTE;
 
 namespace Coconut.Debugging
 {
-  public class VsBreakpoint : IBreakpoint
-  {
-    public VsBreakpoint (Breakpoint breakpoint)
+    public class VsBreakpoint : IBreakpoint
     {
-      File = breakpoint.File;
-      FileLine = breakpoint.FileLine - 1;
-      FileColumn = breakpoint.FileColumn - 1;
-      FunctionName = breakpoint.FunctionName;
-      FunctionLineOffset = breakpoint.FunctionLineOffset - 1;
-      FunctionColumnOffset = breakpoint.FunctionColumnOffset - 1;
+        public VsBreakpoint (Breakpoint breakpoint)
+        {
+            File = breakpoint.File;
+            FileLine = breakpoint.FileLine - 1;
+            FileColumn = breakpoint.FileColumn - 1;
+            FunctionName = breakpoint.FunctionName;
+            FunctionLineOffset = breakpoint.FunctionLineOffset - 1;
+            FunctionColumnOffset = breakpoint.FunctionColumnOffset - 1;
+        }
+
+        public string File { get; }
+        public int FileLine { get; }
+        public int FileColumn { get; }
+
+        public string FunctionName { get; }
+        public int FunctionLineOffset { get; }
+        public int FunctionColumnOffset { get; }
+
+        public bool IsValid ()
+        {
+            return DebuggingService.IsValid(this);
+        }
     }
-
-    public string File { get; }
-    public int FileLine { get; }
-    public int FileColumn { get; }
-
-    public string FunctionName { get; }
-    public int FunctionLineOffset { get; }
-    public int FunctionColumnOffset { get; }
-
-    public bool IsValid ()
-    {
-      return DebuggingService.IsValid(this);
-    }
-  }
 }

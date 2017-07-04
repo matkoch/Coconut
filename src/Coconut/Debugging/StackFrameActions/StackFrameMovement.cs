@@ -14,9 +14,9 @@
 
 namespace Coconut.Debugging.StackFrameActions
 {
-  public enum StackFrameMovement
-  {
-    Next = -1,
-    Previous = 1
-  }
+    public enum StackFrameMovement
+    {
+        Next = -1,
+        Previous = 1
+    }
 }
