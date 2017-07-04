@@ -1,14 +1,12 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coconut", "src\Coconut\Coconut.csproj", "{68456E60-C7A1-4B54-BB14-00063A03B7A3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E1B03E07-7B86-4951-9182-710403937CB3}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuspec", ".nuspec", "{38E0FF06-BB58-4322-97AE-ABAC49317E3B}"
@@ -24,18 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".misc", ".misc", "{1439387A
 		src\AssemblyInfoShared.cs = src\AssemblyInfoShared.cs
 		LICENSE = LICENSE
 		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{6B28D570-67CE-4E55-840F-979DCC5B553E}"
-	ProjectSection(SolutionItems) = preProject
-		Build.Shared.ps1 = Build.Shared.ps1
-		Build.User.ps1 = Build.User.ps1
-		shared\build\CleanOutput.ps1 = shared\build\CleanOutput.ps1
-		shared\build\Compile.ps1 = shared\build\Compile.ps1
-		shared\build\FullBuild.ps1 = shared\build\FullBuild.ps1
-		shared\build\Inspect.ps1 = shared\build\Inspect.ps1
-		shared\build\Package.ps1 = shared\build\Package.ps1
-		shared\build\TestAndCover.ps1 = shared\build\TestAndCover.ps1
 	EndProjectSection
 EndProject
 Global
