@@ -13,12 +13,12 @@
 // limitations under the License.
 
 using System.Linq;
+using Coconut.Utilities;
 using JetBrains.ActionManagement;
 using JetBrains.Annotations;
 using JetBrains.Application.DataContext;
 using JetBrains.ReSharper.Features.Navigation.Features.FindHierarchy;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.DataContext;
 using JetBrains.UI.ActionsRevised;
 
 namespace Coconut.Debugging.GotoDeclaration
@@ -29,7 +29,7 @@ namespace Coconut.Debugging.GotoDeclaration
         {
             if (DebuggingService.IsDebugging
                 && DebuggingService.GetInitializedExpression(context) == null
-                && context.Psi().DeclaredElements.OfType<IOverridableMember>().Any(x => x.IsAbstract))
+                && context.GetDeclaredElements().OfType<IOverridableMember>().Any(x => x.IsAbstract))
                 return true;
 
             return nextUpdate();

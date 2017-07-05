@@ -350,6 +350,7 @@
     <Compile Include="Debugging\GotoDeclaration\DebugDeclarationSearch.cs" />
     <Compile Include="Debugging\DebuggingService.cs" />
     <Compile Include="Debugging\IBreakpoint.cs" />
+    <Compile Include="Utilities\DataContextExtensions.cs" />
     <Compile Include="Utilities\FileSystemPathExtensions.cs" />
     <Compile Include="Debugging\GotoBreakpoints\GotoBreakpointsProvider.cs" />
     <Compile Include="Debugging\StackFrameActions\NextStackFrameAction.cs" />

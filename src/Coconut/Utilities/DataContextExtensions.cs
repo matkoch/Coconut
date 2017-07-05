@@ -12,30 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using JetBrains.ProjectModel;
+using JetBrains.Application.DataContext;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Modules.ExternalFileModules;
-using JetBrains.Util;
+using JetBrains.ReSharper.Psi.DataContext;
 
 namespace Coconut.Utilities
 {
-    public static class FileSystemPathExtensions
+    public static class DataContextExtensions
     {
         [CanBeNull]
-        public static IPsiSourceFile TryGetSourceFile (this FileSystemPath path, ISolution solution)
+        public static IPsiSourceFile GetSourceFile (this IDataContext context)
         {
-            var projectFile = solution.FindProjectItemsByLocation(path).OfType<IProjectFile>().FirstOrDefault();
-            if (projectFile != null)
-                return projectFile.ToSourceFile();
+            return context.GetData(PsiDataConstants.SOURCE_FILE);
+        }
 
-            var contentFilesModuleFactory = solution.GetComponent<ContentFilesModuleFactory>();
-            IPsiSourceFile psiSourceFile;
-            if (contentFilesModuleFactory.PsiModule.TryGetFileByPath(path, out psiSourceFile))
-                return psiSourceFile;
-
-            return null;
+        public static ICollection<IDeclaredElement> GetDeclaredElements (this IDataContext context)
+        {
+            return context.GetData(PsiDataConstants.DECLARED_ELEMENTS);
         }
     }
 }

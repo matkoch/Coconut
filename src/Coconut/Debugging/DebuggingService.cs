@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Coconut.Debugging.StackFrameActions;
+using Coconut.Utilities;
 using EnvDTE;
 using JetBrains.Annotations;
 using JetBrains.Application.DataContext;
@@ -54,7 +55,7 @@ namespace Coconut.Debugging
         {
             Assertion.Assert(Debugger != null, "Debugger != null");
 
-            if (context.Psi().DeclaredElements.IsEmpty())
+            if (context.GetDeclaredElements().IsEmpty())
                 return null;
 
             var expressionText = GetEvaluableExpressionText(context);
@@ -71,7 +72,7 @@ namespace Coconut.Debugging
         [CanBeNull]
         private static string GetEvaluableExpressionText (IDataContext context)
         {
-            var solution = context.GetData(ProjectModelDataConstants.SOLUTION);
+            var solution = context.GetData(ProjectModelDataConstants.SOLUTION).NotNull();
             var textControl = context.GetData(TextControlDataConstants.TEXT_CONTROL).NotNull();
 
             var referenceExpression = TextControlToPsi.GetElementFromCaretPosition<IReferenceExpression>(solution, textControl);

@@ -14,6 +14,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Coconut.Utilities;
 using EnvDTE;
 using JetBrains.Annotations;
 using JetBrains.Application.ComponentModel;
@@ -51,18 +52,17 @@ namespace Coconut.Debugging.GotoDeclaration
             if (expression == null)
                 return null;
 
-            var psiContext = context.Psi();
-            var type = GetTypeFullName(psiContext, expression);
-            return GetDeclaredElement(psiContext, type);
+            var type = GetTypeFullName(context, expression);
+            return GetDeclaredElement(context, type);
         }
 
-        private static string GetTypeFullName (PsiContext psiContext, Expression expression)
+        private static string GetTypeFullName (IDataContext context, Expression expression)
         {
             var type = expression.NotNull().Type;
             type = type.Substring(type.IndexOf(value: '{') + 1);
             type = type.Substring(startIndex: 0, length: type.Length - 1);
 
-            var keywordsService = LanguageManager.Instance.TryGetService<ITypeKeywordsService>(psiContext.SourceFile.NotNull().PrimaryPsiLanguage);
+            var keywordsService = LanguageManager.Instance.TryGetService<ITypeKeywordsService>(context.GetSourceFile().NotNull().PrimaryPsiLanguage);
             if (keywordsService != null)
                 type = keywordsService.GetFullQualifiedTypeName(type) ?? type;
 
@@ -70,9 +70,9 @@ namespace Coconut.Debugging.GotoDeclaration
         }
 
         [CanBeNull]
-        private static ITypeMember GetDeclaredElement (PsiContext psiContext, string actualType)
+        private static ITypeMember GetDeclaredElement (IDataContext context, string actualType)
         {
-            var declaredType = TypeFactory.CreateTypeByCLRName(actualType, psiContext.SourceFile.NotNull().PsiModule);
+            var declaredType = TypeFactory.CreateTypeByCLRName(actualType, context.GetSourceFile().NotNull().PsiModule);
             var resolveResult = declaredType.Resolve();
             if (!resolveResult.IsValid() || resolveResult.IsEmpty)
                 return null;
@@ -81,7 +81,7 @@ namespace Coconut.Debugging.GotoDeclaration
             if (declaredElement == null)
                 return null;
 
-            var selectedElement = psiContext.DeclaredElements.Single();
+            var selectedElement = context.GetDeclaredElements().Single();
             var matchingMembers = declaredElement.GetMembers().Where(x => IsMatchingMember(x, selectedElement)).ToList();
             return matchingMembers.FirstOrDefault();
         }
