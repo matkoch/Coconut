@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = ".build", "..\build\.build.csproj", "{767963EA-1DAE-4A00-A435-D59BF8B6C531}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = ".build", "..\build\.build.csproj", "{636BD95A-FC9F-4068-80B2-834134DE209E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coconut", "Coconut\Coconut.csproj", "{68456E60-C7A1-4B54-BB14-00063A03B7A3}"
 EndProject
@@ -33,8 +33,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{767963EA-1DAE-4A00-A435-D59BF8B6C531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{767963EA-1DAE-4A00-A435-D59BF8B6C531}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{636BD95A-FC9F-4068-80B2-834134DE209E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{636BD95A-FC9F-4068-80B2-834134DE209E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68456E60-C7A1-4B54-BB14-00063A03B7A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{68456E60-C7A1-4B54-BB14-00063A03B7A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68456E60-C7A1-4B54-BB14-00063A03B7A3}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -20,7 +20,7 @@ SCRIPT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 ###########################################################################
 
 NUGET_URL="https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
-SOLUTION_DIRECTORY="$SCRIPT_DIR/../../Coconut/src"
+SOLUTION_DIRECTORY="$SCRIPT_DIR/../src"
 BUILD_PROJECT_FILE="$SCRIPT_DIR/./.build.csproj"
 BUILD_EXE_FILE="$SCRIPT_DIR/./bin/Debug/.build.exe"
 TEMP_DIRECTORY="$SCRIPT_DIR/../../Coconut/.tmp"

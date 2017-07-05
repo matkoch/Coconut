@@ -18,7 +18,7 @@ $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 ###########################################################################
 
 $NuGetUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
-$SolutionDirectory = "$PSScriptRoot\..\..\Coconut\src"
+$SolutionDirectory = "$PSScriptRoot\..\src"
 $BuildProjectFile = "$PSScriptRoot\.\.build.csproj"
 $BuildExeFile = "$PSScriptRoot\.\bin\debug\.build.exe"
 $TempDirectory = "$PSScriptRoot\..\..\Coconut\.tmp"
@@ -40,8 +40,7 @@ if (!$NoInit) {
     if (!(Test-Path $NuGetFile)) { (New-Object System.Net.WebClient).DownloadFile($NuGetUrl, $NuGetFile) }
     elseif ($NuGetUrl.Contains("latest")) { & $NuGetFile update -Self }
 
-    Write-Host $NuGetFile restore $BuildProjectFile -SolutionDirectory $SolutionDirectory
-    ExecSafe { & $NuGetFile restore $BuildProjectFile -SolutionDirectory $SolutionDirectory -MSBuildVersion 14 -Verbosity Detailed }
+    ExecSafe { & $NuGetFile restore $BuildProjectFile -SolutionDirectory $SolutionDirectory }
     ExecSafe { & $NuGetFile install Nuke.MSBuildLocator -ExcludeVersion -OutputDirectory $TempDirectory -SolutionDirectory $SolutionDirectory }
 }
 
