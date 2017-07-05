@@ -40,8 +40,8 @@ if (!$NoInit) {
     if (!(Test-Path $NuGetFile)) { (New-Object System.Net.WebClient).DownloadFile($NuGetUrl, $NuGetFile) }
     elseif ($NuGetUrl.Contains("latest")) { & $NuGetFile update -Self }
 
+    Write-Host $NuGetFile restore $BuildProjectFile -SolutionDirectory $SolutionDirectory
     ExecSafe { & $NuGetFile restore $BuildProjectFile -SolutionDirectory $SolutionDirectory }
-    Write-Host $NuGetFile install Nuke.MSBuildLocator -ExcludeVersion -OutputDirectory $TempDirectory -SolutionDirectory $SolutionDirectory
     ExecSafe { & $NuGetFile install Nuke.MSBuildLocator -ExcludeVersion -OutputDirectory $TempDirectory -SolutionDirectory $SolutionDirectory }
 }
 
