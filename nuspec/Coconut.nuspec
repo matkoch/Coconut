@@ -12,7 +12,7 @@
     <licenseUrl>https://raw.github.com/matkoch/Coconut/master/LICENSE</licenseUrl>
     <tags>resharper features debug navigation settings visualstudio</tags>
     <dependencies>
-      <dependency id="Wave" version="[6.0]" />
+      <dependency id="Wave" version="[8.0]" />
     </dependencies>
   </metadata>
   <files>
