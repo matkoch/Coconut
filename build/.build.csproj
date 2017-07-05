@@ -86,12 +86,12 @@
     <Reference Include="NuGet.Versioning, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\Coconut\packages\NuGet.Versioning.4.0.0\lib\net45\NuGet.Versioning.dll</HintPath>
     </Reference>
-    <Reference Include="Nuke.Common, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Nuke.Common.0.1.88\lib\net46\Nuke.Common.dll</HintPath>
+    <Reference Include="Nuke.Common, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\src\packages\Nuke.Common.0.1.90\lib\net46\Nuke.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Nuke.Core, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Nuke.Core.0.1.88\lib\net46\Nuke.Core.dll</HintPath>
+    <Reference Include="Nuke.Core, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\src\packages\Nuke.Core.0.1.90\lib\net46\Nuke.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Octokit, Version=0.24.0.0, Culture=neutral, processorArchitecture=MSIL">
