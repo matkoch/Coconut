@@ -41,6 +41,7 @@ if (!$NoInit) {
     elseif ($NuGetUrl.Contains("latest")) { & $NuGetFile update -Self }
 
     ExecSafe { & $NuGetFile restore $BuildProjectFile -SolutionDirectory $SolutionDirectory }
+    Write-Host $NuGetFile install Nuke.MSBuildLocator -ExcludeVersion -OutputDirectory $TempDirectory -SolutionDirectory $SolutionDirectory
     ExecSafe { & $NuGetFile install Nuke.MSBuildLocator -ExcludeVersion -OutputDirectory $TempDirectory -SolutionDirectory $SolutionDirectory }
 }
 
